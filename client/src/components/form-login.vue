@@ -4,7 +4,7 @@
       <section>
         <div>
           <h3>LOGIN FORM</h3>
-          <img src="../resource/images/My_Logo.jpg" alt="" />
+          <img src="/images/My_Logo.jpg" alt="" />
         </div>
         <b-field>
           <b-input type="text" placeholder="Enter Username"> </b-input>

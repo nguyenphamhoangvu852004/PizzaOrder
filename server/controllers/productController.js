@@ -6,19 +6,19 @@ const getProducts = async (req, res) => {
     try {
         const data = await db.query(`select * from products`)
         if (!data) {
-            return res.status(404).send({
+            return res.status(404).json({
                 success: false,
                 message: 'No Records Found'
             })
         }
-        res.status(200).send({
+        res.status(200).json({
             success: true,
             message: 'All Products Record',
             data: data[0],
         })
     } catch (error) {
         console.log(error)
-        res.status(500).send({
+        res.status(500).json({
             success: false,
             message: 'Error in Get All Product API',
             error

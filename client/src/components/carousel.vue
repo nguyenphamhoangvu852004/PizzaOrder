@@ -24,16 +24,16 @@ export default {
     return {
       carousels: [
         {
-          image: require("../resource/images/Banner_1.jpg"),
+          image: "/images/Banner_1.jpg",
         },
         {
-          image: require("../resource/images/Banner_2.jpg"),
+          image: "/images/Banner_2.jpg",
         },
         {
-          image: require("../resource/images/Banner_3.jpg"),
+          image: "/images/Banner_3.jpg",
         },
         {
-          image: require("../resource/images/Banner_4.png"),
+          image: "/images/Banner_4.png",
         },
       ],
     };

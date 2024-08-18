@@ -11,7 +11,7 @@
           <div class="card">
             <div class="card-image">
               <figure class="image is-4by3">
-                <img :src="product.image" :alt="product.name" />
+                <img :src="`/images/${product.image}`" :alt="product.name" />
               </figure>
             </div>
             <div class="card-content">
@@ -19,8 +19,10 @@
               <p class="subtitle is-6">{{ product.price }} đ</p>
             </div>
             <div class="card-footer">
-              <a @click="clickMe()" class="card-footer-item">Chi Tiết</a>
-              <a @click="clickMe()" class="card-footer-item">Thêm vào giỏ</a>
+              <a @click="" class="card-footer-item">Chi Tiết</a>
+              <a @click="addToCart(product)" class="card-footer-item"
+                >Thêm vào giỏ</a
+              >
             </div>
           </div>
         </div>
@@ -31,65 +33,55 @@
 
 <script>
 export default {
+  created() {
+    this.getAllProduct();
+  },
   methods: {
-    clickMe() {
-      this.$buefy.notification.open("Clicked!!");
+    addToCart(product) {
+      // Lấy giỏ hàng hiện tại từ localStorage
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+      // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
+      const existingProductIndex = cart.findIndex(
+        (item) => item.id === product.id
+      );
+
+      if (existingProductIndex !== -1) {
+        // Nếu sản phẩm đã có trong giỏ hàng, tăng số lượng
+        cart[existingProductIndex].quantity += 1;
+      } else {
+        // Nếu sản phẩm chưa có trong giỏ hàng, thêm mới với số lượng là 1
+        cart.push({ ...product, quantity: 1 });
+      }
+
+      // Lưu giỏ hàng mới vào localStorage
+      localStorage.setItem("cart", JSON.stringify(cart));
+
+      // Hiển thị thông báo (nếu bạn đang sử dụng Buefy)
+      if (this.$buefy) {
+        this.$buefy.notification.open({
+          message: `Đã thêm ${product.name} vào giỏ hàng!`,
+          type: "is-success",
+          position: "is-bottom-right",
+        });
+      }
+    },
+    async getAllProduct() {
+      try {
+        const result = await this.axios.get(
+          "http://localhost:8213/api/v1/product/getAllProduct"
+        );
+        // console.log(result.data.data); check data
+        this.products = result.data.data;
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
+
   data() {
     return {
-      products: [
-        {
-          name: "Pizza Hải Sản",
-          price: 150000,
-          image: require("../resource/images/home-img-1.png"),
-        },
-        {
-          name: "Pizza Hải Sản",
-          price: 150000,
-          image: require("../resource/images/home-img-1.png"),
-        },
-        {
-          name: "Pizza Hải Sản",
-          price: 150000,
-          image: require("../resource/images/home-img-1.png"),
-        },
-        {
-          name: "Pizza Hải Sản",
-          price: 150000,
-          image: require("../resource/images/home-img-1.png"),
-        },
-        {
-          name: "Pizza Hải Sản",
-          price: 150000,
-          image: require("../resource/images/home-img-1.png"),
-        },
-        {
-          name: "Pizza Hải Sản",
-          price: 150000,
-          image: require("../resource/images/home-img-1.png"),
-        },
-        {
-          name: "Pizza Hải Sản",
-          price: 150000,
-          image: require("../resource/images/home-img-1.png"),
-        },
-        {
-          name: "Pizza Hải Sản",
-          price: 150000,
-          image: require("../resource/images/home-img-1.png"),
-        },
-        {
-          name: "Pizza Hải Sản",
-          price: 150000,
-          image: require("../resource/images/home-img-1.png"),
-        },
-        {
-          name: "Pizza Hải Sản",
-          price: 150000,
-          image: require("../resource/images/home-img-1.png"),
-        },
-      ],
+      products: [],
     };
   },
 };
@@ -103,11 +95,11 @@ export default {
 }
 .card-footer-item {
   color: black;
-  transition-delay: 0.2;
 }
 .card-footer-item:hover {
-  color: white;
-  background-color: rgb(150, 150, 6);
+  color: rgb(255, 251, 5);
+  background-color: rgb(244, 106, 1);
+  transition: all 0.2s ease;
 }
 .card-content {
   flex-grow: 1;

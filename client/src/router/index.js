@@ -5,6 +5,7 @@ import form_login from "../components/form-login.vue"
 import form_signup from "../components/form-signup.vue"
 import product_detail from "../components/product-detail.vue"
 import shopping_cart from "../components/shoppingCart.vue"
+import payment from "../components/payment.vue"
 const routes = [
   {
     path: '/',
@@ -32,6 +33,11 @@ const routes = [
     path: '/shopping-cart',
     name: 'shopping-car',
     component: shopping_cart
+  },
+  {
+    path: '/payment',
+
+    component: payment
   },
 ]
 

@@ -5,7 +5,7 @@
       <template #brand>
         <b-navbar-item href="/">
           <img
-            src="./resource/images/logo.png"
+            src="/images/logo.png"
             style="width: 100px; max-height: 80px"
             alt="Logo"
           />
@@ -16,14 +16,14 @@
         <b-navbar-item tag="div">
           <div class="buttons">
             <a href="/form-login" class="button" style="background-color: #ddd">
-              <img src="./resource/images/account-icon.png" alt="" />
+              <img src="/images/account-icon.png" alt="" />
             </a>
             <a
               href="shopping-cart"
               class="button"
               style="background-color: grey"
             >
-              <img src="./resource/images/cart.png" alt="Cart" />
+              <img src="/images/cart.png" alt="Cart" />
             </a>
           </div>
         </b-navbar-item>
@@ -43,7 +43,7 @@
   <footer class="footer">
     <div class="footer-container">
       <div class="footer-left">
-        <img src="./resource/images/logo.png" alt="Logo" class="footer-logo" />
+        <img src="/images/logo.png" alt="Logo" class="footer-logo" />
         <div class="footer-hotline">
           <p>Hotline Đặt Hàng</p>
           <p style="" class="hotline-number">
@@ -68,15 +68,15 @@
       <div class="footer-right">
         <div class="footer-social">
           <a href="https://www.facebook.com/profile.php?id=61556666886780"
-            ><img src="./resource/images/facebook-icon.png" alt="Facebook"
+            ><img src="/images/facebook-icon.png" alt="Facebook"
           /></a>
           <a href="#"
-            ><img src="./resource/images/instagram-icon.png" alt="Instagram"
+            ><img src="/images/instagram-icon.png" alt="Instagram"
           /></a>
         </div>
         <div class="footer-payment">
-          <img src="./resource/images/mastercard-logo.png" alt="MasterCard" />
-          <img src="./resource/images/secured-logo.png" alt="Secured" />
+          <img src="/images/mastercard-logo.png" alt="MasterCard" />
+          <img src="/images/secured-logo.png" alt="Secured" />
         </div>
         <div class="footer-language">
           <button>Switch To English Version</button>
