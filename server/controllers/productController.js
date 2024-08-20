@@ -4,7 +4,7 @@ const db = mySqlPool
 //GET ALL PRODUCT LIST
 const getProducts = async (req, res) => {
     try {
-        const data = await db.query(`select * from products`)
+        const data = await db.query("SELECT * from Products p ")
         if (!data) {
             return res.status(404).json({
                 success: false,

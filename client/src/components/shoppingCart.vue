@@ -25,15 +25,15 @@
         <div class="cart-summary">
           <div class="total">
             <h3>Tổng Tiền</h3>
-            <p>{{ calculateTotal() }} đ</p>
+            <p>{{ calculateTotal }} đ</p>
           </div>
           <div class="option">
             <a href="/">
-              <button class="continue-btn">Tiếp Tục Mua Hàng</button></a
-            >
+              <button class="continue-btn">Tiếp Tục Mua Hàng</button>
+            </a>
             <a href="/payment">
-              <button class="checkout-btn" @click="">Thanh Toán</button></a
-            >
+              <button class="checkout-btn">Thanh Toán</button>
+            </a>
           </div>
         </div>
       </div>
@@ -41,53 +41,44 @@
   </section>
 </template>
 
-<script>
-export default {
-  created() {
-    this.loadCart();
-  },
-  methods: {
-    loadCart() {
-      // Tải giỏ hàng từ localStorage
-      this.products = JSON.parse(localStorage.getItem("cart")) || [];
-    },
-    decreaseQuantity(index) {
-      if (this.products[index].quantity > 1) {
-        this.products[index].quantity--;
-      }
-      localStorage.setItem("cart", JSON.stringify(this.products));
-    },
-    increaseQuantity(index) {
-      this.products[index].quantity++;
-      localStorage.setItem("cart", JSON.stringify(this.products));
-    },
-    removeProduct(index) {
-      this.products.splice(index, 1);
+<script setup>
+import { ref, onMounted, computed } from "vue";
+const products = ref([]);
 
-      // Cập nhật localStorage
-      localStorage.setItem("cart", JSON.stringify(this.products));
+onMounted(() => {
+  loadCart();
+});
 
-      // Hiển thị thông báo (tùy chọn)
-      if (this.$buefy) {
-        this.$buefy.notification.open({
-          message: "Sản phẩm đã được xóa khỏi giỏ hàng",
-          type: "is-success",
-          position: "is-bottom-right",
-        });
-      }
-    },
-    calculateTotal() {
-      return this.products.reduce((total, product) => {
-        return total + product.price * product.quantity;
-      }, 0);
-    },
-  },
-  data() {
-    return {
-      products: [],
-    };
-  },
+const loadCart = () => {
+  products.value = JSON.parse(localStorage.getItem("cart")) || [];
 };
+
+const updateLocalStorage = () => {
+  localStorage.setItem("cart", JSON.stringify(products.value));
+};
+
+const increaseQuantity = (index) => {
+  products.value[index].quantity++;
+  updateLocalStorage();
+};
+
+const decreaseQuantity = (index) => {
+  if (products.value[index].quantity > 1) {
+    products.value[index].quantity--;
+  }
+  updateLocalStorage();
+};
+
+const removeProduct = (index) => {
+  products.value.splice(index, 1);
+  updateLocalStorage();
+};
+
+const calculateTotal = computed(() => {
+  return products.value.reduce((total, product) => {
+    return total + product.price * product.quantity;
+  }, 0);
+});
 </script>
 
 <style scoped>

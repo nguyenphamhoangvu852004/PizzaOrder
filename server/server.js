@@ -30,7 +30,7 @@ app.use('/api/v1/product', router)
 
 //MySQL Connection
 mySqlPool
-    .query('SELECT * FROM products')
+    .query('SELECT * from Products')
     .then(async () => {
         await console.log(`DATABASE CONNECTED SUCCCESS...`)
         await app.listen(port, () => {

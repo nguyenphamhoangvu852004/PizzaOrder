@@ -1,19 +1,16 @@
-import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 
 import Buefy from 'buefy'
 import 'buefy/dist/buefy.css'
 import * as Vue from 'vue' // in Vue 3
-import axios from 'axios'
+import axiosInstance from './axios' // Import axios instance từ file axios.js
 import VueAxios from 'vue-axios'
 
-
-
-
-
 const app = Vue.createApp(App)
-app.use(VueAxios, axios)
+
+// Sử dụng axios instance đã được cấu hình
+app.use(VueAxios, axiosInstance)
 app.use(Buefy, {
     defaultNotificationPosition: 'is-bottom-right'
 })

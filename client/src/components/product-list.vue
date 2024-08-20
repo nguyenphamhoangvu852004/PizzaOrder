@@ -11,18 +11,18 @@
           <div class="card">
             <div class="card-image">
               <figure class="image is-4by3">
-                <img :src="`/images/${product.image}`" :alt="product.name" />
+                <img :src="`/images/${product.Image}`" :alt="product.Name" />
               </figure>
             </div>
             <div class="card-content">
-              <p class="title is-4">{{ product.name }}</p>
-              <p class="subtitle is-6">{{ product.price }} đ</p>
+              <p class="title is-4">{{ product.Name }}</p>
+              <p class="subtitle is-6">{{ product.Price }} đ</p>
             </div>
             <div class="card-footer">
               <a @click="" class="card-footer-item">Chi Tiết</a>
-              <a @click="addToCart(product)" class="card-footer-item"
-                >Thêm vào giỏ</a
-              >
+              <a @click="addToCart(product)" class="card-footer-item">
+                Thêm vào giỏ
+              </a>
             </div>
           </div>
         </div>
@@ -31,60 +31,38 @@
   </section>
 </template>
 
-<script>
-export default {
-  created() {
-    this.getAllProduct();
-  },
-  methods: {
-    addToCart(product) {
-      // Lấy giỏ hàng hiện tại từ localStorage
-      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+<script setup>
+import { ref, onMounted } from "vue";
+import axios from "@/axios"; // Import axios từ file axios.js
 
-      // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
-      const existingProductIndex = cart.findIndex(
-        (item) => item.id === product.id
-      );
+const products = ref([]);
 
-      if (existingProductIndex !== -1) {
-        // Nếu sản phẩm đã có trong giỏ hàng, tăng số lượng
-        cart[existingProductIndex].quantity += 1;
-      } else {
-        // Nếu sản phẩm chưa có trong giỏ hàng, thêm mới với số lượng là 1
-        cart.push({ ...product, quantity: 1 });
-      }
-
-      // Lưu giỏ hàng mới vào localStorage
-      localStorage.setItem("cart", JSON.stringify(cart));
-
-      // Hiển thị thông báo (nếu bạn đang sử dụng Buefy)
-      if (this.$buefy) {
-        this.$buefy.notification.open({
-          message: `Đã thêm ${product.name} vào giỏ hàng!`,
-          type: "is-success",
-          position: "is-bottom-right",
-        });
-      }
-    },
-    async getAllProduct() {
-      try {
-        const result = await this.axios.get(
-          "http://localhost:8213/api/v1/product/getAllProduct"
-        );
-        // console.log(result.data.data); check data
-        this.products = result.data.data;
-      } catch (error) {
-        console.log(error);
-      }
-    },
-  },
-
-  data() {
-    return {
-      products: [],
-    };
-  },
+const getAllProduct = async () => {
+  try {
+    const result = await axios.get("product/getAllProduct");
+    products.value = result.data.data;
+    console.log(products.value);
+  } catch (error) {
+    console.error("Error fetching products:", error);
+  }
 };
+
+const addToCart = (product) => {
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const existingProductIndex = cart.findIndex((item) => item.id === product.id);
+
+  if (existingProductIndex !== -1) {
+    cart[existingProductIndex].quantity += 1;
+  } else {
+    cart.push({ ...product, quantity: 1 });
+  }
+
+  localStorage.setItem("cart", JSON.stringify(cart));
+};
+
+onMounted(() => {
+  getAllProduct();
+});
 </script>
 
 <style scoped>
