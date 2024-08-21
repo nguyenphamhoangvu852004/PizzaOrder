@@ -1,11 +1,12 @@
 import express from "express";
 import dotenv from "dotenv"
 import mySqlPool from "./config/db.js";
-import router from "./routes/productRoutes.js"
+import productRoutes from "./routes/productRoutes.js"
+import userRoutes from "./routes/userRoutes.js"
 import cors from "cors"
 //rest object
 const app = express()
-
+app.use(express.json());
 //config dotenv
 dotenv.config()
 
@@ -26,7 +27,8 @@ app.all('/', function (req, res, next) {
 
 
 //routes
-app.use('/api/v1/product', router)
+app.use('/api/v1/product', productRoutes)
+app.use('/api/v1/user', userRoutes)
 
 //MySQL Connection
 mySqlPool

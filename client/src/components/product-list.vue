@@ -43,7 +43,7 @@ const getAllProduct = async () => {
     products.value = result.data.data;
     console.log(products.value);
   } catch (error) {
-    console.error("Error fetching products:", error);
+    console.log("Error fetching products:", error);
   }
 };
 

@@ -7,22 +7,37 @@
           <img src="/images/My_Logo.jpg" alt="" />
         </div>
         <b-field>
-          <b-input type="text" placeholder="Username"> </b-input>
-        </b-field>
-        <b-field>
-          <b-input type="text" placeholder="Phonenumber"> </b-input>
-        </b-field>
-        <!-- <b-field label="Email" type="is-danger" message="This email is invalid"> -->
-        <b-field>
-          <b-input type="text" placeholder="Email"> </b-input>
-        </b-field>
-
-        <b-field>
-          <b-input type="password" placeholder="Password" password-reveal>
+          <b-input
+            v-model="Account.username"
+            type="text"
+            placeholder="Username"
+          >
           </b-input>
         </b-field>
         <b-field>
           <b-input
+            v-model="Account.phone"
+            type="text"
+            placeholder="Phonenumber"
+          >
+          </b-input>
+        </b-field>
+        <b-field>
+          <b-input v-model="Account.email" type="text" placeholder="Email">
+          </b-input>
+        </b-field>
+        <b-field>
+          <b-input
+            v-model="Account.password"
+            type="password"
+            placeholder="Password"
+            password-reveal
+          >
+          </b-input>
+        </b-field>
+        <b-field>
+          <b-input
+            v-model="Account.passwordConfirm"
             type="password"
             placeholder="Confirm Password"
             password-reveal
@@ -31,7 +46,7 @@
         </b-field>
 
         <div style="display: flex; margin-top: 10px">
-          <input type="checkbox" />
+          <input v-model="isAgreed" type="checkbox" />
           <p>
             I have read and agree to
             <a
@@ -50,12 +65,52 @@
 
 <script setup>
 import { ref } from "vue";
+import axios from "@/axios"; // Đảm bảo import axios
+import { isValidate } from "@/services/validationForm";
 
-const username = ref();
-const password = ref();
+const isAgreed = ref(false);
+const Account = ref({
+  username: "",
+  phone: "",
+  email: "",
+  password: "",
+  passwordConfirm: "",
+});
 
-const loginButton = () => {};
-const signupButton = () => {};
+const sendDataToServer = async (data) => {
+  try {
+    const response = await axios.post("user/sign-up", {
+      username: data.username,
+      phone: data.phone,
+      email: data.email,
+      password: data.password,
+    });
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    console.log(
+      "Lỗi khi đăng ký:",
+      error.response ? error.response.data : error.message
+    );
+    throw error;
+  }
+};
+
+const signupButton = async () => {
+  if (!isAgreed.value) {
+    alert("Vui lòng đồng ý với điều khoản và điều kiện");
+    return;
+  }
+  if (isValidate(Account.value)) {
+    try {
+      const result = await sendDataToServer(Account.value);
+      console.log(result);
+    } catch (error) {
+      console.log("Đăng ký thất bại:", error);
+      // Xử lý lỗi (ví dụ: hiển thị thông báo lỗi)
+    }
+  }
+};
 </script>
 
 <style>
