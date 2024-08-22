@@ -9,10 +9,10 @@
             v-for="(product, index) in products"
             :key="index"
           >
-            <img :src="`/images/${product.image}`" :alt="product.name" />
+            <img :src="`/images/${product.Image}`" :alt="product.Name" />
             <div class="product-info">
-              <h3 class="product-name">{{ product.name }}</h3>
-              <p class="product-price">{{ product.price }} đ</p>
+              <h3 class="product-name">{{ product.Name }}</h3>
+              <p class="product-price">{{ product.Price }} đ</p>
               <div class="quantity-control">
                 <button @click="decreaseQuantity(index)">-</button>
                 <span>{{ product.quantity }}</span>
@@ -76,7 +76,7 @@ const removeProduct = (index) => {
 
 const calculateTotal = computed(() => {
   return products.value.reduce((total, product) => {
-    return total + product.price * product.quantity;
+    return total + product.Price * product.quantity;
   }, 0);
 });
 </script>

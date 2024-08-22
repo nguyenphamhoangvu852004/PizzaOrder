@@ -1,5 +1,5 @@
 import e from "express";
-import { createAccount } from "../controllers/userController.js";
+import { createAccount, loginAccount } from "../controllers/userController.js";
 //router object
 const router = e.Router()
 
@@ -7,5 +7,6 @@ const router = e.Router()
 
 //GET ALL PRODUCTS LIST
 router.post("/sign-up", createAccount)
+router.post("/log-in", loginAccount)
 
 export default router

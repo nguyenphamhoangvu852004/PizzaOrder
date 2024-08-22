@@ -4,8 +4,13 @@ import mySqlPool from "./config/db.js";
 import productRoutes from "./routes/productRoutes.js"
 import userRoutes from "./routes/userRoutes.js"
 import cors from "cors"
+
 //rest object
 const app = express()
+//CORS
+app.use(cors({
+    origin: 'http://localhost:8080'
+}));
 app.use(express.json());
 //config dotenv
 dotenv.config()
@@ -14,10 +19,6 @@ dotenv.config()
 const port = process.env.APP_PORT || 8999
 const hostname = process.env.APP_HOSTNAME
 
-//CORS
-app.use(cors({
-    origin: 'http://localhost:8080'
-}));
 
 app.all('/', function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");

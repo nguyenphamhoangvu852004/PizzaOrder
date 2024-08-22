@@ -41,23 +41,35 @@ const getAllProduct = async () => {
   try {
     const result = await axios.get("product/getAllProduct");
     products.value = result.data.data;
-    console.log(products.value);
   } catch (error) {
     console.log("Error fetching products:", error);
   }
 };
-
 const addToCart = (product) => {
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
-  const existingProductIndex = cart.findIndex((item) => item.id === product.id);
+  try {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const existingProductIndex = cart.findIndex(
+      (item) => item.ProductID === product.ProductID
+    );
 
-  if (existingProductIndex !== -1) {
-    cart[existingProductIndex].quantity += 1;
-  } else {
-    cart.push({ ...product, quantity: 1 });
+    if (existingProductIndex !== -1) {
+      cart[existingProductIndex].quantity += 1;
+      console.log(
+        `Đã tăng số lượng sản phẩm "${product.Name}" trong giỏ hàng.`
+      );
+    } else {
+      cart.push({ ...product, quantity: 1 });
+      console.log(`Đã thêm sản phẩm "${product.Name}" vào giỏ hàng.`);
+    }
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+
+    // Thông báo cho người dùng (có thể sử dụng thư viện toast notification)
+    // alert(`Đã thêm "${product.Name}" vào giỏ hàng.`);
+  } catch (error) {
+    console.error("Lỗi khi thêm vào giỏ hàng:", error);
+    alert("Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng. Vui lòng thử lại.");
   }
-
-  localStorage.setItem("cart", JSON.stringify(cart));
 };
 
 onMounted(() => {

@@ -27,7 +27,7 @@
         </b-field>
 
         <b-button @click="loginButton">Log In</b-button>
-        
+
         <div style="display: flex; text-align: center">
           <p>Not Have An Account Yet?</p>
           <a href="/form-signup"> Sign Up</a>
@@ -39,14 +39,10 @@
 
 <script setup>
 import { ref } from "vue";
-import { useRouter } from "vue-router"; // Import useRouter từ vue-router
+import { useRouter } from "vue-router";
+import axios from "@/axios";
 
-const ds_account = ref([
-  { id: "aaa", username: "admin", password: "admin" },
-  { id: 1, username: "account1", password: "password1" },
-  { id: 2, username: "account2", password: "password2" },
-  { id: 3, username: "account3", password: "password3" },
-]);
+const router = useRouter();
 
 const account = ref({
   username: "",
@@ -56,39 +52,48 @@ const account = ref({
 const usernameError = ref("");
 const passwordError = ref("");
 
-const router = useRouter(); // Khởi tạo router
-
-const validateForm = () => {
+const loginButton = async () => {
+  // Reset error messages
   usernameError.value = "";
   passwordError.value = "";
 
-  if (!account.value.username) {
-    usernameError.value = "Username is required.";
+  // Validate inputs
+  if (account.value.username === "") {
+    usernameError.value = "Username is required";
+    return;
   }
-  if (!account.value.password) {
-    passwordError.value = "Password is required.";
+  if (account.value.password === "") {
+    passwordError.value = "Password is required";
+    return;
   }
 
-  return !usernameError.value && !passwordError.value;
-};
+  try {
+    const response = await axios.post("user/log-in", {
+      username: account.value.username,
+      password: account.value.password,
+    });
 
-const loginButton = () => {
-  if (validateForm()) {
-    // Kiểm tra tài khoản có trong danh sách không
-    const user = ds_account.value.find(
-      (user) =>
-        user.username === account.value.username &&
-        user.password === account.value.password
-    );
+    console.log(response);
 
-    if (user) {
-      console.log("Login successful.");
-      // Chuyển hướng về trang chủ
+    if (response.data.success) {
+      // Login successful
+      // alert("Login successful!");
+      // You can store user data in localStorage or Vuex store here if needed
+      // For example:
+      localStorage.setItem("user", JSON.stringify(response.data.user));
+
+      // Redirect to home page or dashboard
       router.push("/");
     } else {
-      console.log("Invalid username or password.");
-      usernameError.value = "Invalid username or password.";
+      // Login failed
+      alert(response.data.message || "Login failed. Please try again.");
     }
+  } catch (error) {
+    console.error(
+      "Login error:",
+      error.response ? error.response.data : error.message
+    );
+    alert("Có lỗi xảy ra khi đăng nhập.");
   }
 };
 </script>
