@@ -76,16 +76,13 @@ const loginButton = async () => {
     console.log(response);
 
     if (response.data.success) {
-      // Login successful
-      // alert("Login successful!");
-      // You can store user data in localStorage or Vuex store here if needed
-      // For example:
+      // Đăng nhập thành công
       localStorage.setItem("user", JSON.stringify(response.data.user));
 
-      // Redirect to home page or dashboard
+      // Chuyển hướng về trang chủ
       router.push("/");
     } else {
-      // Login failed
+      // Đăng nhập thất bại
       alert(response.data.message || "Login failed. Please try again.");
     }
   } catch (error) {

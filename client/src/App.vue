@@ -15,7 +15,17 @@
       <template #end>
         <b-navbar-item tag="div">
           <div class="buttons">
-            <a href="/form-login" class="button" style="background-color: #ddd">
+            <p v-if="username">
+              Chào, <a href="/user">{{ username }}</a
+              >!
+            </p>
+            <p v-else></p>
+            <a
+              v-if="!isLogged"
+              href="/form-login"
+              class="button"
+              style="background-color: #ddd"
+            >
               <img src="/images/account-icon.png" alt="" />
             </a>
             <a
@@ -86,14 +96,37 @@
   </footer>
   <!-- Đây là phần FOOTER -->
 </template>
+<script setup>
+import { onMounted, ref, watch } from "vue";
+import { useRoute } from "vue-router";
 
-<script>
-export default {
-  name: "App",
-  mounted() {
-    document.title = "NoodlePizza By NguyenVu";
-  },
-};
+const username = ref(null);
+let isLogged = false;
+const route = useRoute(); // Lấy thông tin về route hiện tại
+
+onMounted(() => {
+  checkLoginStatus();
+});
+
+// Theo dõi sự thay đổi của route và chạy lại checkLoginStatus khi route thay đổi
+watch(
+  () => route.path,
+  () => {
+    checkLoginStatus();
+  }
+);
+
+function checkLoginStatus() {
+  const storedUser = localStorage.getItem("user");
+  if (storedUser) {
+    const userObject = JSON.parse(storedUser); // Phân tích cú pháp chuỗi JSON
+    username.value = userObject.username;
+    isLogged = true; // Lấy giá trị username từ đối tượng
+  } else {
+    // console.log("No user found in localStorage.");
+    isLogged = false;
+  }
+}
 </script>
 
 <style scoped>
