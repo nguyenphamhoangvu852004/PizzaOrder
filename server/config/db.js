@@ -1,16 +1,26 @@
-import mysql from 'mysql2/promise';
-import dotenv from 'dotenv';
+import mysql2 from "mysql2/promise"
+import dotenv from 'dotenv'
 
-// Load biến môi trường từ file .env
-dotenv.config();
+dotenv.config()
 
-// Tạo kết nối đến MySQL
-const mySqlPool = mysql.createPool({
-    host: process.env.DB_HOSTNAME,
-    user: process.env.DB_USERNAME,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_DATABASE,
-    port: process.env.DB_PORT,
-});
+const DB_HOSTNAME = process.env.DB_HOSTNAME;
 
-export default mySqlPool;
+const DB_PORT = process.env.DB_PORT;
+
+const DB_USERNAME = process.env.DB_USERNAME;
+
+const DB_PASSWORD = process.env.DB_PASSWORD;
+
+const DB_DATABASE = process.env.DB_DATABASE;
+
+
+const mySqlPool = mysql2.createPool({
+    host: DB_HOSTNAME,
+    port: DB_PORT,
+    user: DB_USERNAME,
+    password: DB_PASSWORD,
+    database: DB_DATABASE
+
+})
+
+export default mySqlPool
