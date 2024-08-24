@@ -31,8 +31,10 @@
             <a href="/">
               <button class="continue-btn">Tiếp Tục Mua Hàng</button>
             </a>
-            <a href="/payment">
-              <button class="checkout-btn">Thanh Toán</button>
+            <a @click.prevent="saveDataDetail()" href="/payment">
+              <button class="checkout-btn" @click="proceedToPayment">
+                Thanh Toán
+              </button>
             </a>
           </div>
         </div>
@@ -43,6 +45,13 @@
 
 <script setup>
 import { ref, onMounted, computed } from "vue";
+import { useRouter } from "vue-router";
+const router = useRouter(); // Đảm bảo import useRouter từ vue-router
+
+const proceedToPayment = () => {
+  saveDataDetail();
+  router.push("/payment");
+};
 const products = ref([]);
 
 onMounted(() => {
@@ -79,6 +88,17 @@ const calculateTotal = computed(() => {
     return total + product.Price * product.quantity;
   }, 0);
 });
+
+const saveDataDetail = () => {
+  const cartDetails = products.value.map((product) => ({
+    name: product.Name,
+    quantity: product.quantity,
+    price: product.Price,
+  }));
+
+  localStorage.setItem("cartDetails", JSON.stringify(cartDetails));
+  localStorage.setItem("cartTotal", calculateTotal.value);
+};
 </script>
 
 <style scoped>

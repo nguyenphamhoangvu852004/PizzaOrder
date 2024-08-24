@@ -1,12 +1,8 @@
 <template>
-  <div>
-    <div v-if="isLoggedIn">This Is User Page</div>
-
-    <div v-else>You are not logged in.</div>
-
-    <div v-if="isLoggedIn">
-      <button @click="logout()">Đăng Xuất</button>
-    </div>
+  <div class="container" v-if="isLoggedIn">
+    <img src="" alt="" />
+    <p>Tên Của User nè</p>
+    <button @click="logout()">Đăng Xuất</button>
   </div>
 </template>
 
@@ -14,6 +10,8 @@
 import { useRouter } from "vue-router";
 
 import { ref, onMounted, watch } from "vue";
+
+import deleteAllCookies from "../services/resetCookie.js";
 
 const router = useRouter();
 
@@ -42,20 +40,31 @@ function checkLoginStatus() {
     username.value = JSON.parse(userData).name;
   } else {
     isLoggedIn.value = false;
-
+    window.location.href = "/form-login";
     username.value = "";
   }
 }
 
 function logout() {
   if (isLoggedIn.value) {
-    localStorage.removeItem("user");
+    deleteAllCookies();
 
-    isLoggedIn.value = false;
+    // Xóa dữ liệu từ localStorage (nếu cần)
+    localStorage.clear();
 
-    username.value = "";
+    // Xóa dữ liệu từ sessionStorage (nếu cần)
+    sessionStorage.clear();
 
+    // Chuyển hướng người dùng đến trang đăng nhập hoặc trang chủ
+    // window.location.href = "/login";
     window.location.href = "/";
+    // localStorage.removeItem("user");
+
+    // isLoggedIn.value = false;
+
+    // username.value = "";
+
+    // window.location.href = "/";
   } else {
     console.log("Không có người dùng nào đang đăng nhập.");
   }

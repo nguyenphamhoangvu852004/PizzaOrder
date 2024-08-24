@@ -33,7 +33,7 @@ app.use('/api/v1/user', userRoutes)
 
 //MySQL Connection
 mySqlPool
-    .query('SELECT * from Products')
+    .query('SHOW DATABASES')
     .then(async () => {
         await console.log(`DATABASE CONNECTED SUCCCESS...`)
         await app.listen(port, () => {
