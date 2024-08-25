@@ -1,7 +1,7 @@
 <template>
   <div class="container" v-if="isLoggedIn">
-    <img src="" alt="" />
-    <p>Tên Của User nè</p>
+    <p>Xin Chào, Bạn là {{ username }}</p>
+    <img src="" alt="hinh anh" />
     <button @click="logout()">Đăng Xuất</button>
   </div>
 </template>
@@ -37,7 +37,7 @@ function checkLoginStatus() {
   if (userData) {
     isLoggedIn.value = true;
 
-    username.value = JSON.parse(userData).name;
+    username.value = JSON.parse(userData).username;
   } else {
     isLoggedIn.value = false;
     window.location.href = "/form-login";
@@ -51,7 +51,8 @@ function logout() {
 
     // Xóa dữ liệu từ localStorage (nếu cần)
     localStorage.clear();
-
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
     // Xóa dữ liệu từ sessionStorage (nếu cần)
     sessionStorage.clear();
 

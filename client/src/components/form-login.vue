@@ -79,6 +79,9 @@ const loginButton = async () => {
       // Đăng nhập thành công
       localStorage.setItem("user", JSON.stringify(response.data.user));
 
+      // Lưu token vào localStorage
+      localStorage.setItem("token", response.data.token);
+
       // Chuyển hướng về trang chủ
       router.push("/");
     } else {

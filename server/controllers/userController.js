@@ -1,6 +1,8 @@
 import mySqlPool from "../config/db.js"
 import bcrypt from "bcrypt"
-
+import jwt from "jsonwebtoken"
+import dotenv from "dotenv"
+dotenv.config()
 const db = mySqlPool
 const salt = 10;
 
@@ -51,7 +53,6 @@ const loginAccount = async (req, res) => {
     try {
         const { username, password } = req.body;
 
-        // Kiểm tra xem có đầy đủ thông tin đăng nhập không
         if (!username || !password) {
             return res.status(400).json({
                 success: false,
@@ -59,17 +60,21 @@ const loginAccount = async (req, res) => {
             });
         }
 
-        // Thực hiện query để lấy thông tin tài khoản
         const [results] = await db.query(
             "SELECT * FROM Accounts WHERE Username = ?",
             [username]
         );
 
         if (results.length > 0) {
-            // So sánh mật khẩu
             const isMatch = await bcrypt.compare(password, results[0].Password);
             if (isMatch) {
-                // Đăng nhập thành công
+                // Generate JWT token
+                const token = jwt.sign(
+                    { id: results[0].ID, username: results[0].Username },
+                    process.env.JWT_SECRET,
+                    { expiresIn: '1h' }
+                );
+                
                 res.status(200).json({
                     success: true,
                     message: 'Đăng nhập thành công',
@@ -77,17 +82,16 @@ const loginAccount = async (req, res) => {
                         id: results[0].ID,
                         username: results[0].Username,
                         email: results[0].Email
-                    }
+                    },
+                    token: token
                 });
             } else {
-                // Mật khẩu không đúng
                 res.status(401).json({
                     success: false,
                     message: 'Tên đăng nhập hoặc mật khẩu không đúng'
                 });
             }
         } else {
-            // Tài khoản không tồn tại
             res.status(401).json({
                 success: false,
                 message: 'Tên đăng nhập hoặc mật khẩu không đúng'
