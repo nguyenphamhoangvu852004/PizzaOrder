@@ -39,10 +39,7 @@
 
 <script setup>
 import { ref } from "vue";
-import { useRouter } from "vue-router";
 import axios from "@/axios";
-
-const router = useRouter();
 
 const account = ref({
   username: "",
@@ -83,7 +80,7 @@ const loginButton = async () => {
       localStorage.setItem("token", response.data.token);
 
       // Chuyển hướng về trang chủ
-      router.push("/");
+      window.location.href = "/";
     } else {
       // Đăng nhập thất bại
       alert(response.data.message || "Login failed. Please try again.");

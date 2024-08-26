@@ -21,7 +21,7 @@
             </p>
             <p v-else></p>
             <a
-              v-if="!isLogged"
+              v-if="!isLogged.value"
               href="/form-login"
               class="button"
               style="background-color: #ddd"
@@ -97,38 +97,40 @@
   <!-- Đây là phần FOOTER -->
 </template>
 <script setup>
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
+import axios from "@/axios"; // Đảm bảo bạn đã cấu hình axios
 
-const username = ref(null);
-let isLogged = false;
-const route = useRoute(); // Lấy thông tin về route hiện tại
+const isLogged = ref(false);
+const route = useRoute();
 
 onMounted(() => {
   checkLoginStatus();
 });
 
-// Theo dõi sự thay đổi của route và chạy lại checkLoginStatus khi route thay đổi
-watch(
-  () => route.path,
-  () => {
-    checkLoginStatus();
+const username = ref("");
+const getUserFromID = async (userId) => {
+  if (!userId) return;
+  try {
+    const response = await axios.get(`/user/username/${userId}`);
+    username.value = response.data.username;
+  } catch (error) {
+    console.error("Error fetching user data:", error);
   }
-);
+};
 
-function checkLoginStatus() {
+const checkLoginStatus = () => {
   const storedUser = localStorage.getItem("user");
   if (storedUser) {
-    const userObject = JSON.parse(storedUser); // Phân tích cú pháp chuỗi JSON
-    username.value = userObject.username;
-    isLogged = true; // Lấy giá trị username từ đối tượng
+    const userObject = JSON.parse(storedUser);
+    isLogged.value = true;
+    getUserFromID(userObject.id);
   } else {
-    // console.log("No user found in localStorage.");
-    isLogged = false;
+    isLogged.value = false;
+    username.value = "";
   }
-}
+};
 </script>
-
 <style scoped>
 .fixed-navbar {
   position: fixed;

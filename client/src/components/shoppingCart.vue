@@ -4,7 +4,7 @@
       <h2 class="title is-2">Giỏ Hàng</h2>
       <div class="cart-container">
         <div class="list-products">
-          <div
+          <!-- <div
             class="product-detail"
             v-for="(product, index) in products"
             :key="index"
@@ -20,18 +20,18 @@
               </div>
             </div>
             <button class="remove-btn" @click="removeProduct(index)">X</button>
-          </div>
+          </div> -->
         </div>
         <div class="cart-summary">
           <div class="total">
             <h3>Tổng Tiền</h3>
-            <p>{{ calculateTotal }} đ</p>
+            <p>0 đ</p>
           </div>
           <div class="option">
             <a href="/">
               <button class="continue-btn">Tiếp Tục Mua Hàng</button>
             </a>
-            <a @click.prevent="saveDataDetail()" href="/payment">
+            <a href="/payment">
               <button class="checkout-btn" @click="proceedToPayment">
                 Thanh Toán
               </button>
@@ -43,63 +43,7 @@
   </section>
 </template>
 
-<script setup>
-import { ref, onMounted, computed } from "vue";
-import { useRouter } from "vue-router";
-const router = useRouter(); // Đảm bảo import useRouter từ vue-router
-
-const proceedToPayment = () => {
-  saveDataDetail();
-  router.push("/payment");
-};
-const products = ref([]);
-
-onMounted(() => {
-  loadCart();
-});
-
-const loadCart = () => {
-  products.value = JSON.parse(localStorage.getItem("cart")) || [];
-};
-
-const updateLocalStorage = () => {
-  localStorage.setItem("cart", JSON.stringify(products.value));
-};
-
-const increaseQuantity = (index) => {
-  products.value[index].quantity++;
-  updateLocalStorage();
-};
-
-const decreaseQuantity = (index) => {
-  if (products.value[index].quantity > 1) {
-    products.value[index].quantity--;
-  }
-  updateLocalStorage();
-};
-
-const removeProduct = (index) => {
-  products.value.splice(index, 1);
-  updateLocalStorage();
-};
-
-const calculateTotal = computed(() => {
-  return products.value.reduce((total, product) => {
-    return total + product.Price * product.quantity;
-  }, 0);
-});
-
-const saveDataDetail = () => {
-  const cartDetails = products.value.map((product) => ({
-    name: product.Name,
-    quantity: product.quantity,
-    price: product.Price,
-  }));
-
-  localStorage.setItem("cartDetails", JSON.stringify(cartDetails));
-  localStorage.setItem("cartTotal", calculateTotal.value);
-};
-</script>
+<script setup></script>
 
 <style scoped>
 .cart-container {

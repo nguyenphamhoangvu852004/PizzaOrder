@@ -105,7 +105,8 @@ const signupButton = async () => {
     try {
       const result = await sendDataToServer(Account.value);
       console.log(result);
-      alert(`Đăng ký thành công.`);
+      alert(`Bạn đã đăng ký thành công, vui lòng đăng nhập`);
+      window.location.href = "/form-login";
     } catch (error) {
       console.log("Đăng ký thất bại:", error);
       // Xử lý lỗi (ví dụ: hiển thị thông báo lỗi)

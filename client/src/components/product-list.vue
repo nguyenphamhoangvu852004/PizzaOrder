@@ -45,27 +45,32 @@ const getAllProduct = async () => {
     console.log("Error fetching products:", error);
   }
 };
-const addToCart = (product) => {
+const addToCart = async (product) => {
   try {
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
-    const existingProductIndex = cart.findIndex(
-      (item) => item.ProductID === product.ProductID
-    );
-
-    if (existingProductIndex !== -1) {
-      cart[existingProductIndex].quantity += 1;
-      console.log(
-        `Đã tăng số lượng sản phẩm "${product.Name}" trong giỏ hàng.`
-      );
-    } else {
-      cart.push({ ...product, quantity: 1 });
-      console.log(`Đã thêm sản phẩm "${product.Name}" vào giỏ hàng.`);
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng.");
+      return;
     }
 
-    localStorage.setItem("cart", JSON.stringify(cart));
+    const response = await axios.post(
+      "user/add",
+      {
+        productId: product.ProductID,
+        quantity: 1,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
-    // Thông báo cho người dùng (có thể sử dụng thư viện toast notification)
-    // alert(`Đã thêm "${product.Name}" vào giỏ hàng.`);
+    if (response.data.success) {
+      alert(`Đã thêm "${product.Name}" vào giỏ hàng.`);
+    } else {
+      alert("Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng.");
+    }
   } catch (error) {
     console.error("Lỗi khi thêm vào giỏ hàng:", error);
     alert("Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng. Vui lòng thử lại.");

@@ -1,6 +1,6 @@
 <template>
   <div class="container" v-if="isLoggedIn">
-    <p>Xin Chào, Bạn là {{ username }}</p>
+    <p>Xin Chào, Bạn là</p>
     <img src="" alt="hinh anh" />
     <button @click="logout()">Đăng Xuất</button>
   </div>
@@ -8,16 +8,12 @@
 
 <script setup>
 import { useRouter } from "vue-router";
-
 import { ref, onMounted, watch } from "vue";
 
 import deleteAllCookies from "../services/resetCookie.js";
-
 const router = useRouter();
 
 const isLoggedIn = ref(false);
-
-const username = ref("");
 
 onMounted(() => {
   checkLoginStatus();
@@ -32,17 +28,12 @@ watch(
 );
 
 function checkLoginStatus() {
-  const userData = localStorage.getItem("user");
-
-  if (userData) {
-    isLoggedIn.value = true;
-
-    username.value = JSON.parse(userData).username;
-  } else {
-    isLoggedIn.value = false;
-    window.location.href = "/form-login";
-    username.value = "";
+  let userData = localStorage.getItem("user");
+  if (!userData) {
+    window.location.href = "/form-login ";
+    return;
   }
+  isLoggedIn.value = true;
 }
 
 function logout() {
@@ -51,8 +42,8 @@ function logout() {
 
     // Xóa dữ liệu từ localStorage (nếu cần)
     localStorage.clear();
-    localStorage.removeItem("user");
-    localStorage.removeItem("token");
+    // localStorage.removeItem("user");
+    // localStorage.removeItem("token");
     // Xóa dữ liệu từ sessionStorage (nếu cần)
     sessionStorage.clear();
 
