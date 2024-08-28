@@ -9,7 +9,7 @@ import cors from "cors"
 const app = express()
 //CORS
 app.use(cors({
-    origin: 'http://localhost:8080'
+    origin: 'http://localhost:8080' || 'https://nguyenphamhoangvu.id.vn'
 }));
 app.use(express.json());
 //config dotenv

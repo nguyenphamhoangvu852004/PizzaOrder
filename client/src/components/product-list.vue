@@ -39,9 +39,7 @@ const products = ref([]);
 
 const getAllProduct = async () => {
   try {
-    const result = await axios.get(
-      "https://pizzaorder-2rtb.onrender.com/api/v1/product/getAllProduct"
-    );
+    const result = await axios.get("product/getAllProduct");
     products.value = result.data.data;
   } catch (error) {
     console.log("Error fetching products:", error);
