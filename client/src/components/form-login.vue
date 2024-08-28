@@ -69,10 +69,13 @@ const loginButton = async () => {
   loading.value = true;
 
   try {
-    const response = await axios.post("user/log-in", {
-      username: account.value.username,
-      password: account.value.password,
-    });
+    const response = await axios.post(
+      "https://pizzaorder-2rtb.onrender.com/api/v1/user/log-in",
+      {
+        username: account.value.username,
+        password: account.value.password,
+      }
+    );
 
     if (!response.data.success) {
       // Xử lý các trường hợp khác nếu cần

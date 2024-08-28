@@ -111,7 +111,9 @@ const checkLoginStatus = () => {
 // Hàm lấy tên người dùng từ ID
 const getUsernameFromID = async (id) => {
   try {
-    const response = await axios.get(`user/username/${id}`);
+    const response = await axios.get(
+      `https://pizzaorder-2rtb.onrender.com/api/v1/user/username/${id}`
+    );
     username.value = response.data.username; // Gán tên người dùng vào biến `username`
   } catch (error) {
     console.log("Error fetching username:", error);

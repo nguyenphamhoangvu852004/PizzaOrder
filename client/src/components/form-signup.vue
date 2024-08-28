@@ -79,12 +79,15 @@ const Account = ref({
 
 const sendDataToServer = async (data) => {
   try {
-    const response = await axios.post("user/sign-up", {
-      username: data.username,
-      phone: data.phone,
-      email: data.email,
-      password: data.password,
-    });
+    const response = await axios.post(
+      "https://pizzaorder-2rtb.onrender.com/api/v1/user/sign-up",
+      {
+        username: data.username,
+        phone: data.phone,
+        email: data.email,
+        password: data.password,
+      }
+    );
     console.log(response);
     return response.data;
   } catch (error) {
