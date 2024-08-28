@@ -63,7 +63,7 @@
   padding: 15px;
   margin-bottom: 15px;
   background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .product-detail img {
@@ -96,16 +96,17 @@
 }
 
 .quantity-control button {
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   background-color: #f0f0f0;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  font-size: 1.2em;
 }
 
 .quantity-control span {
-  margin: 0 10px;
+  margin: 0 12px;
   font-weight: bold;
 }
 
@@ -113,9 +114,14 @@
   background-color: #ff5252;
   color: white;
   border: none;
-  padding: 5px 10px;
+  padding: 8px 12px;
   border-radius: 4px;
   cursor: pointer;
+  font-size: 1.2em;
+}
+
+.remove-btn:hover {
+  background-color: #e64a19;
 }
 
 .cart-summary {
@@ -123,7 +129,7 @@
   background-color: #f9f9f9;
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .total {
@@ -136,7 +142,7 @@
 }
 
 .total p {
-  font-size: 1.5em;
+  font-size: 1.6em;
   font-weight: bold;
   color: #e53935;
 }
@@ -148,12 +154,13 @@
 }
 
 .option button {
-  padding: 10px;
+  padding: 12px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   font-weight: bold;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  font-size: 1em;
 }
 
 .continue-btn {
@@ -168,5 +175,9 @@
 
 .option button:hover {
   opacity: 0.9;
+}
+
+.option button:active {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 </style>

@@ -45,32 +45,9 @@ const getAllProduct = async () => {
     console.log("Error fetching products:", error);
   }
 };
+
 const addToCart = async (product) => {
   try {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      alert("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng.");
-      return;
-    }
-
-    const response = await axios.post(
-      "user/add",
-      {
-        productId: product.ProductID,
-        quantity: 1,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-
-    if (response.data.success) {
-      alert(`Đã thêm "${product.Name}" vào giỏ hàng.`);
-    } else {
-      alert("Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng.");
-    }
   } catch (error) {
     console.error("Lỗi khi thêm vào giỏ hàng:", error);
     alert("Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng. Vui lòng thử lại.");
