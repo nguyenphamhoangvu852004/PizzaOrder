@@ -12,7 +12,11 @@ dotenv.config()
 const app = express()
 
 // CORS configuration
-const allowedOrigins = ['http://localhost:8080', 'https://nguyenphamhoangvu.id.vn'];
+const allowedOrigins = [
+    'http://localhost:8080',
+    'https://nguyenphamhoangvu.id.vn',
+    'https://pizzaorder-2rtb.onrender.com'
+];
 app.use(cors({
     origin: function (origin, callback) {
         if (!origin || allowedOrigins.indexOf(origin) !== -1) {
