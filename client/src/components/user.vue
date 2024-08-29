@@ -54,11 +54,11 @@
 </template>
 
 <script setup>
-import { onMounted, reactive } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import axios from "@/axios.js";
 
 const userID = localStorage.getItem("userID");
-
+const isLoggedIn = ref(true);
 const userInfo = reactive({
   fullName: null,
   email: null,
@@ -68,6 +68,7 @@ const userInfo = reactive({
 });
 
 onMounted(async () => {
+  checkLoggedIn();
   await fetchUserInfo();
 });
 
@@ -81,6 +82,15 @@ async function fetchUserInfo() {
     console.error("Error fetching user info:", error);
   }
 }
+
+const checkLoggedIn = () => {
+  const userToken = localStorage.getItem("userToken");
+  isLoggedIn.value = !!userToken;
+
+  if (!isLoggedIn.value) {
+    window.location.href = "/form-login";
+  }
+};
 
 function editProfile() {
   // Implement edit profile logic
