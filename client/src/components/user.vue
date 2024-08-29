@@ -1,112 +1,108 @@
 <template>
-  <div class="container">
-    <div class="user-information-container">
-      <div class="user-details">
-        <h2>Welcome, {{ username }}</h2>
-        <img
-          src="/images/Designer.png"
-          alt="Profile Image"
-          class="profile-image"
-        />
-        <button @click="logout" class="logout-button">Log Out</button>
+  <div class="user-profile">
+    <header class="profile-header">
+      <h1>Thông tin tài khoản</h1>
+    </header>
+    <div class="profile-content">
+      <div class="profile-section">
+        <h2>Thông tin cá nhân</h2>
+        <div class="info-group">
+          <label>Họ tên:</label>
+          <p>{{ userInfo.fullName }}</p>
+          <!-- Chú ý tên thuộc tính này -->
+        </div>
+        <div class="info-group">
+          <label>Email:</label>
+          <p>{{ userInfo.email }}</p>
+        </div>
+        <div class="info-group">
+          <label>Số điện thoại:</label>
+          <p>{{ userInfo.phone }}</p>
+        </div>
+        <button @click="editProfile" class="edit-button">Chỉnh sửa</button>
+      </div>
+
+      <div class="profile-section">
+        <h2>Địa chỉ giao hàng</h2>
+        <!-- <div v-if="userInfo.addresses.length > 0">
+          <div
+            v-for="(address, index) in userInfo.addresses"
+            :key="index"
+            class="address-item"
+          >
+            <p>{{ address }}</p>
+          </div>
+        </div> -->
+        <!-- <p v-else>Bạn chưa có địa chỉ giao hàng nào.</p> -->
+        <button @click="addAddress" class="add-button">Thêm địa chỉ mới</button>
+      </div>
+
+      <div class="profile-section">
+        <h2>Điểm tích lũy</h2>
+        <!-- <div class="points-display">
+          <span class="points">{{ userInfo.points }}</span>
+          <span class="points-label">điểm</span>
+        </div> -->
+        <button @click="showPointsHistory" class="history-button">
+          Xem lịch sử điểm
+        </button>
       </div>
     </div>
+
+    <button @click="logout" class="logout-button">Đăng xuất</button>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { onMounted, reactive } from "vue";
 import axios from "@/axios.js";
-onMounted(() => {
-  checkLoginStatus();
+
+const userID = localStorage.getItem("userID");
+
+const userInfo = reactive({
+  fullName: null,
+  email: null,
+  phone: null,
+  // addresses: [],
+  // points: 0,
 });
-const username = ref("");
-const getUsernameFromID = async (id) => {
+
+onMounted(async () => {
+  await fetchUserInfo();
+});
+
+async function fetchUserInfo() {
   try {
-    const response = await axios.get(`user/username/${id}`);
-    username.value = response.data.username;
+    const response = await axios.get(`/user/userInfo/${userID}`);
+    userInfo.fullName = response.data[0].Username;
+    userInfo.email = response.data[0].Email;
+    userInfo.phone = response.data[0].Phone;
   } catch (error) {
-    console.log("Error fetching username:", error);
+    console.error("Error fetching user info:", error);
   }
-};
-function checkLoginStatus() {
-  let userToken = localStorage.getItem("userToken");
-  let userID = localStorage.getItem("userID");
-  getUsernameFromID(userID);
-  if (!userToken) {
-    window.location.href = "/form-login ";
-  }
+}
+
+function editProfile() {
+  // Implement edit profile logic
+  console.log("Edit profile");
+}
+
+function addAddress() {
+  // Implement add address logic
+  console.log("Add new address");
+}
+
+function showPointsHistory() {
+  // Implement show points history logic
+  console.log("Show points history");
 }
 
 function logout() {
   localStorage.removeItem("userToken");
-  window.location.href = "/";
+  // Thực hiện các hành động khác khi đăng xuất, ví dụ: chuyển hướng về trang đăng nhập
+  console.log("User logged out");
+  window.location.href = "/form-login"; // Hoặc bất kỳ đường dẫn nào bạn muốn chuyển đến sau khi đăng xuất
 }
 </script>
 
-<style scoped>
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #f3ec78, #af4261);
-}
-
-.user-information-container {
-  background: #ffffff;
-  border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  padding: 30px;
-  max-width: 350px;
-  text-align: center;
-  transition: transform 0.3s;
-}
-
-.user-information-container:hover {
-  transform: translateY(-10px);
-}
-
-.user-details h2 {
-  margin-bottom: 20px;
-  font-size: 24px;
-  color: #333;
-  font-weight: 600;
-}
-
-.profile-image {
-  border-radius: 50%;
-  margin-bottom: 20px;
-  width: 150px;
-  height: 150px;
-  object-fit: cover;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.profile-image:hover {
-  transform: scale(1.1);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-}
-
-.logout-button {
-  background-color: #af4261;
-  color: #fff;
-  border: none;
-  border-radius: 25px;
-  padding: 12px 20px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s, box-shadow 0.3s;
-}
-
-.logout-button:hover {
-  background-color: #f3ec78;
-  color: #333;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-}
-
-.logout-button:focus {
-  outline: none;
-}
-</style>
+<style src="../styles/components/user.css" scoped></style>

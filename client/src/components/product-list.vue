@@ -41,17 +41,44 @@ const getAllProduct = async () => {
   try {
     const result = await axios.get("product/getAllProduct");
     products.value = result.data.data;
+    console.log(products.value);
   } catch (error) {
     console.log("Error fetching products:", error);
   }
 };
 
-const addToCart = async (product) => {
-  try {
-  } catch (error) {
-    console.error("Lỗi khi thêm vào giỏ hàng:", error);
-    alert("Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng. Vui lòng thử lại.");
+const addToCart = (product) => {
+  let userID = localStorage.getItem("userID");
+
+  // Lấy giỏ hàng hiện tại từ localStorage
+  let cart = JSON.parse(localStorage.getItem("cart")) || {};
+
+  // Nếu userID chưa có trong giỏ hàng, tạo giỏ hàng cho user đó
+  if (!cart[userID]) {
+    cart[userID] = [];
   }
+
+  // Tìm xem sản phẩm đã tồn tại trong giỏ hàng chưa
+  let existingProduct = cart[userID].find(
+    (item) => item.productID === product.ProductID
+  );
+
+  if (existingProduct) {
+    // Nếu sản phẩm đã tồn tại, tăng số lượng
+    existingProduct.quantity += 1;
+  } else {
+    // Nếu sản phẩm chưa tồn tại, thêm sản phẩm vào giỏ hàng
+    cart[userID].push({
+      productID: product.ProductID,
+      name: product.Name,
+      price: product.Price,
+      image: product.Image,
+      quantity: 1, // Mặc định số lượng là 1 khi thêm vào giỏ hàng
+    });
+  }
+
+  // Lưu lại giỏ hàng vào localStorage
+  localStorage.setItem("cart", JSON.stringify(cart));
 };
 
 onMounted(() => {
@@ -59,26 +86,4 @@ onMounted(() => {
 });
 </script>
 
-<style scoped>
-.card {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-.card-footer-item {
-  color: black;
-}
-.card-footer-item:hover {
-  color: rgb(255, 251, 5);
-  background-color: rgb(244, 106, 1);
-  transition: all 0.2s ease;
-}
-.card-content {
-  flex-grow: 1;
-}
-
-.image.is-4by3 {
-  background-position: center;
-  background-size: cover;
-}
-</style>
+<style src="../styles/components/product-list.css" scoped></style>

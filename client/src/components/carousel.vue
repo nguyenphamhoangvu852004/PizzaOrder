@@ -41,24 +41,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.hero.is-medium .hero-body {
-  padding: 0;
-  height: 400px; /* Giữ chiều cao cố định như ví dụ ban đầu */
-}
-
-.carousel-image-container {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-
-.carousel-image {
-  width: 100%;
-  height: 100%;
-  object-fit: fit;
-  /* object-fit: cover;
-  object-fit: contain; */
-  object-position: center;
-}
-</style>
+<style src="../styles/components/carousel.css" scoped></style>

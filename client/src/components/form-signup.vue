@@ -79,15 +79,12 @@ const Account = ref({
 
 const sendDataToServer = async (data) => {
   try {
-    const response = await axios.post(
-      "https://pizzaorder-2rtb.onrender.com/api/v1/user/sign-up",
-      {
-        username: data.username,
-        phone: data.phone,
-        email: data.email,
-        password: data.password,
-      }
-    );
+    const response = await axios.post("user/sign-up", {
+      username: data.username,
+      phone: data.phone,
+      email: data.email,
+      password: data.password,
+    });
     console.log(response);
     return response.data;
   } catch (error) {
@@ -118,141 +115,4 @@ const signupButton = async () => {
 };
 </script>
 
-<style>
-/* Định dạng chung cho cả hai trang */
-body {
-  font-family: "Poppins", sans-serif;
-  background-color: #f5f5f5;
-  margin: 0;
-  padding: 0;
-}
-
-.form-signup-container,
-.form-login-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-
-.form-signup,
-.form-login {
-  background-color: #fff;
-  border-radius: 8px;
-  padding: 20px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  max-width: 400px;
-  width: 100%;
-}
-
-.form-signup h3,
-.form-login h3 {
-  text-align: center;
-  margin-bottom: 20px;
-  color: #333;
-}
-
-.form-signup img,
-.form-login img {
-  display: block;
-  margin: 0 auto 20px;
-  width: 100px;
-  height: auto;
-}
-
-b-field {
-  margin-bottom: 15px;
-}
-
-b-input {
-  width: 100%;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  padding: 10px;
-  box-sizing: border-box;
-}
-
-b-input.is-danger {
-  border-color: #ff5252;
-}
-
-b-button {
-  width: 100%;
-  padding: 12px;
-  border: none;
-  border-radius: 4px;
-  color: #fff;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-b-button:hover {
-  opacity: 0.9;
-}
-
-b-button:disabled {
-  background-color: #b0bec5;
-  cursor: not-allowed;
-}
-
-.error {
-  color: #ff5252;
-  font-size: 0.9em;
-}
-
-.form-signup .terms {
-  display: flex;
-  align-items: center;
-  margin-top: 10px;
-}
-
-.form-signup input[type="checkbox"] {
-  margin-right: 10px;
-}
-
-.form-signup p {
-  font-size: 0.9em;
-}
-
-.form-signup a {
-  color: #2196f3;
-  text-decoration: none;
-}
-
-.form-signup a:hover {
-  text-decoration: underline;
-}
-
-.form-login .error {
-  margin-top: 10px;
-}
-
-.form-login a {
-  color: #2196f3;
-  text-decoration: none;
-}
-
-.form-login a:hover {
-  text-decoration: underline;
-}
-
-.form-signup .form-signup-footer,
-.form-login .form-login-footer {
-  display: flex;
-  justify-content: center;
-  margin-top: 10px;
-  font-size: 0.9em;
-}
-
-.form-signup .form-signup-footer a,
-.form-login .form-login-footer a {
-  color: #2196f3;
-  text-decoration: none;
-}
-
-.form-signup .form-signup-footer a:hover,
-.form-login .form-login-footer a:hover {
-  text-decoration: underline;
-}
-</style>
+<style src="../styles/components/form-login-signup.css" scoped></style>

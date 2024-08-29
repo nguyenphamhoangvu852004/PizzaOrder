@@ -70,7 +70,7 @@ const loginAccount = async (req, res) => {
             if (isMatch) {
                 // Generate JWT token
                 const token = jwt.sign(
-                    { id: results[0].AccountID, username: results[0].Username },
+                    { id: results[0].AccountID, username: results[0].Username, password: results[0].Password },
                     process.env.JWT_SECRET,
                     { expiresIn: '1h' }
                 );
@@ -104,7 +104,6 @@ const loginAccount = async (req, res) => {
         });
     }
 }
-
 const getUserName = async (req, res) => {
     const id = req.params.id;
 
@@ -122,4 +121,22 @@ const getUserName = async (req, res) => {
         res.status(500).json({ error: 'Lỗi khi truy vấn cơ sở dữ liệu' });
     }
 };
-export { createAccount, loginAccount, getUserName }
+const getUserInfo = async (req, res) => {
+    const id = req.params.id;
+
+    try {
+        const [results] = await db.query('SELECT * FROM Accounts WHERE AccountID = ?', [id]);
+
+        if (results.length === 0) {
+            return res.status(404).json({ error: 'Không tìm thấy tài khoản với ID này' });
+        }
+
+        // const dataUserInfo = [results[0].Username, results[0].Email, results[0].Phone]
+
+        res.json(results);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Lỗi khi truy vấn cơ sở dữ liệu' });
+    }
+}
+export { createAccount, loginAccount, getUserName, getUserInfo }

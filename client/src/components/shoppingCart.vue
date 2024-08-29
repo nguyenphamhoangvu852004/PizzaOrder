@@ -4,15 +4,15 @@
       <h2 class="title is-2">Giỏ Hàng</h2>
       <div class="cart-container">
         <div class="list-products">
-          <!-- <div
+          <div
             class="product-detail"
             v-for="(product, index) in products"
             :key="index"
           >
-            <img :src="`/images/${product.Image}`" :alt="product.Name" />
+            <img :src="`/images/${product.image}`" :alt="product.name" />
             <div class="product-info">
-              <h3 class="product-name">{{ product.Name }}</h3>
-              <p class="product-price">{{ product.Price }} đ</p>
+              <h3 class="product-name">{{ product.name }}</h3>
+              <p class="product-price">{{ product.price }} đ</p>
               <div class="quantity-control">
                 <button @click="decreaseQuantity(index)">-</button>
                 <span>{{ product.quantity }}</span>
@@ -20,14 +20,17 @@
               </div>
             </div>
             <button class="remove-btn" @click="removeProduct(index)">X</button>
-          </div> -->
+          </div>
         </div>
         <div class="cart-summary">
           <div class="total">
             <h3>Tổng Tiền</h3>
-            <p>0 đ</p>
+            <p>{{ totalPrice }} đ</p>
           </div>
           <div class="option">
+            <button class="remove-all-btn" @click="removeAllProducts">
+              Xóa Tất Cả
+            </button>
             <a href="/">
               <button class="continue-btn">Tiếp Tục Mua Hàng</button>
             </a>
@@ -43,141 +46,61 @@
   </section>
 </template>
 
-<script setup></script>
+<script setup>
+import { ref, onMounted, computed } from "vue";
 
-<style scoped>
-.cart-container {
-  display: flex;
-  gap: 20px;
-}
+const products = ref([]);
 
-.list-products {
-  flex: 2;
-}
+onMounted(() => {
+  let userID = localStorage.getItem("userID");
+  let cart = JSON.parse(localStorage.getItem("cart")) || {};
 
-.product-detail {
-  display: flex;
-  align-items: center;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  padding: 15px;
-  margin-bottom: 15px;
-  background-color: #fff;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
+  // Load products from cart for the current user
+  if (cart[userID]) {
+    products.value = cart[userID];
+  }
+});
 
-.product-detail img {
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
-  border-radius: 4px;
-  margin-right: 15px;
-}
+const increaseQuantity = (index) => {
+  products.value[index].quantity += 1;
+  updateCart();
+};
 
-.product-info {
-  flex: 1;
-}
+const decreaseQuantity = (index) => {
+  if (products.value[index].quantity > 1) {
+    products.value[index].quantity -= 1;
+    updateCart();
+  }
+};
 
-.product-name {
-  font-size: 1.2em;
-  font-weight: bold;
-  margin-bottom: 5px;
-}
+const removeProduct = (index) => {
+  products.value.splice(index, 1);
+  updateCart();
+};
 
-.product-price {
-  color: #e53935;
-  font-weight: bold;
-}
+const removeAllProducts = () => {
+  products.value = []; // Xóa tất cả sản phẩm trong giỏ
+  updateCart(); // Cập nhật giỏ hàng trong localStorage
+};
 
-.quantity-control {
-  display: flex;
-  align-items: center;
-  margin-top: 10px;
-}
+const updateCart = () => {
+  let userID = localStorage.getItem("userID");
+  let cart = JSON.parse(localStorage.getItem("cart")) || {};
+  cart[userID] = products.value;
+  localStorage.setItem("cart", JSON.stringify(cart));
+};
 
-.quantity-control button {
-  width: 32px;
-  height: 32px;
-  background-color: #f0f0f0;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 1.2em;
-}
+const totalPrice = computed(() => {
+  return products.value.reduce(
+    (total, product) => total + product.quantity * product.price,
+    0
+  );
+});
 
-.quantity-control span {
-  margin: 0 12px;
-  font-weight: bold;
-}
+const proceedToPayment = () => {
+  // Logic để tiến hành thanh toán
+  alert("Proceeding to payment...");
+};
+</script>
 
-.remove-btn {
-  background-color: #ff5252;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 1.2em;
-}
-
-.remove-btn:hover {
-  background-color: #e64a19;
-}
-
-.cart-summary {
-  flex: 1;
-  background-color: #f9f9f9;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-.total {
-  margin-bottom: 20px;
-}
-
-.total h3 {
-  font-size: 1.2em;
-  margin-bottom: 10px;
-}
-
-.total p {
-  font-size: 1.6em;
-  font-weight: bold;
-  color: #e53935;
-}
-
-.option {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.option button {
-  padding: 12px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background-color 0.3s, box-shadow 0.3s;
-  font-size: 1em;
-}
-
-.continue-btn {
-  background-color: #4caf50;
-  color: white;
-}
-
-.checkout-btn {
-  background-color: #2196f3;
-  color: white;
-}
-
-.option button:hover {
-  opacity: 0.9;
-}
-
-.option button:active {
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-</style>
+<style src="../styles/components/shoppingcart.css" scoped></style>

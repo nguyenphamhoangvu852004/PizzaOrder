@@ -45,7 +45,7 @@ app.use('/api/v1/user', userRoutes)
 mySqlPool
     .query('SHOW DATABASES')
     .then(async () => {
-        console.log(`DATABASE CONNECTED SUCCESSFULLY...`)
+        console.log(`DATABASE ${process.env.DB_DATABASE} CONNECTED SUCCESSFULLY...`)
         app.listen(port, () => {
             console.log(`APP IS RUNNING ON http://${hostname}:${port}`)
         })

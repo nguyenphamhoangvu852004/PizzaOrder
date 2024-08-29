@@ -1,0 +1,107 @@
+.user-profile {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.profile-header {
+    background-color: #006491;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.profile-header h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.profile-content {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.profile-section {
+    padding: 20px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.profile-section:last-child {
+    border-bottom: none;
+}
+
+.profile-section h2 {
+    color: #006491;
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+.info-group {
+    margin-bottom: 10px;
+}
+
+.info-group label {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.address-item {
+    margin-bottom: 10px;
+}
+
+.points-display {
+    display: flex;
+    align-items: baseline;
+    margin-bottom: 15px;
+}
+
+.points {
+    font-size: 36px;
+    font-weight: bold;
+    color: #e31837;
+    margin-right: 10px;
+}
+
+.points-label {
+    font-size: 18px;
+    color: #666;
+}
+
+button {
+    background-color: #006491;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #004e70;
+}
+
+.edit-button,
+.add-button,
+.history-button {
+    display: block;
+    margin-top: 15px;
+}
+
+.logout-button {
+    background-color: #d9534f;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.logout-button:hover {
+    background-color: #c9302c;
+}

@@ -1,5 +1,5 @@
 {
-  "name": "client",
+  "name": "NoodlePizza",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -8,6 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "": "file:",
     "axios": "^1.7.4",
     "buefy": "npm:@ntohq/buefy-next@^0.1.4",
     "client": "file:",
