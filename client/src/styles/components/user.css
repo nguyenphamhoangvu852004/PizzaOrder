@@ -105,3 +105,35 @@ button:hover {
 .logout-button:hover {
     background-color: #c9302c;
 }
+
+.loading-spinner,
+.error-message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+}
+
+.error-message {
+    flex-direction: column;
+}
+
+.retry-button {
+    margin-top: 10px;
+    padding: 5px 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.info-group input {
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+
+.save-button,
+.cancel-button {
+    margin-right: 10px;
+}

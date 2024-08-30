@@ -3,46 +3,63 @@
     <header class="profile-header">
       <h1>Thông tin tài khoản</h1>
     </header>
-    <div class="profile-content">
+    <div v-if="loading" class="loading-spinner">
+      <span class="icon is-large">
+        <i class="fas fa-spinner fa-pulse fa-3x"></i>
+      </span>
+    </div>
+    <div v-else-if="error" class="error-message">
+      <p>{{ error }}</p>
+      <button @click="fetchUserInfo" class="retry-button">Thử lại</button>
+    </div>
+    <div v-else class="profile-content">
       <div class="profile-section">
         <h2>Thông tin cá nhân</h2>
-        <div class="info-group">
-          <label>Họ tên:</label>
-          <p>{{ userInfo.fullName }}</p>
-          <!-- Chú ý tên thuộc tính này -->
+        <div v-if="!isEditing">
+          <div class="info-group">
+            <label>Họ tên:</label>
+            <p>{{ userInfo.fullName }}</p>
+          </div>
+          <div class="info-group">
+            <label>Email:</label>
+            <p>{{ userInfo.email }}</p>
+          </div>
+          <div class="info-group">
+            <label>Số điện thoại:</label>
+            <p>{{ userInfo.phone }}</p>
+          </div>
+          <button @click="startEditing" class="edit-button">Chỉnh sửa</button>
         </div>
-        <div class="info-group">
-          <label>Email:</label>
-          <p>{{ userInfo.email }}</p>
+        <div v-else>
+          <form @submit.prevent="saveChanges">
+            <div class="info-group">
+              <label>Họ tên:</label>
+              <input v-model="editedInfo.fullName" required />
+            </div>
+            <div class="info-group">
+              <label>Email:</label>
+              <input v-model="editedInfo.email" type="email" required />
+            </div>
+            <div class="info-group">
+              <label>Số điện thoại:</label>
+              <input v-model="editedInfo.phone" type="tel" required />
+            </div>
+            <button type="submit" class="save-button">Lưu thay đổi</button>
+            <button @click="cancelEditing" class="cancel-button">Hủy</button>
+          </form>
         </div>
-        <div class="info-group">
-          <label>Số điện thoại:</label>
-          <p>{{ userInfo.phone }}</p>
-        </div>
-        <button @click="editProfile" class="edit-button">Chỉnh sửa</button>
       </div>
 
       <div class="profile-section">
         <h2>Địa chỉ giao hàng</h2>
-        <!-- <div v-if="userInfo.addresses.length > 0">
-          <div
-            v-for="(address, index) in userInfo.addresses"
-            :key="index"
-            class="address-item"
-          >
-            <p>{{ address }}</p>
-          </div>
-        </div> -->
-        <!-- <p v-else>Bạn chưa có địa chỉ giao hàng nào.</p> -->
+        <p>Bạn chưa có địa chỉ giao hàng nào.</p>
         <button @click="addAddress" class="add-button">Thêm địa chỉ mới</button>
       </div>
 
       <div class="profile-section">
         <h2>Điểm tích lũy</h2>
-        <!-- <div class="points-display">
-          <span class="points">{{ userInfo.points }}</span>
-          <span class="points-label">điểm</span>
-        </div> -->
+        <p>Thông tin điểm tích lũy chưa có sẵn.</p>
+        <p>Bạn cần mua hàng để tích lũy điểm.</p>
         <button @click="showPointsHistory" class="history-button">
           Xem lịch sử điểm
         </button>
@@ -56,62 +73,103 @@
 <script setup>
 import { onMounted, reactive, ref } from "vue";
 import axios from "@/axios.js";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 const userID = localStorage.getItem("userID");
-const isLoggedIn = ref(true);
+const loading = ref(true);
+const error = ref(null);
+const isEditing = ref(false);
 const userInfo = reactive({
   fullName: null,
   email: null,
   phone: null,
-  // addresses: [],
-  // points: 0,
+});
+const editedInfo = reactive({
+  fullName: "",
+  email: "",
+  phone: "",
 });
 
-onMounted(async () => {
+onMounted(() => {
   checkLoggedIn();
-  await fetchUserInfo();
+  fetchUserInfo();
 });
 
 async function fetchUserInfo() {
+  loading.value = true;
+  error.value = null;
   try {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     const response = await axios.get(`/user/userInfo/${userID}`);
     userInfo.fullName = response.data[0].Username;
     userInfo.email = response.data[0].Email;
     userInfo.phone = response.data[0].Phone;
-  } catch (error) {
-    console.error("Error fetching user info:", error);
+  } catch (err) {
+    console.error("Error fetching user info:", err);
+    error.value = "Không thể tải thông tin người dùng. Vui lòng thử lại sau.";
+  } finally {
+    loading.value = false;
   }
 }
 
 const checkLoggedIn = () => {
   const userToken = localStorage.getItem("userToken");
-  isLoggedIn.value = !!userToken;
-
-  if (!isLoggedIn.value) {
-    window.location.href = "/form-login";
+  if (!userToken) {
+    router.push("/form-login");
   }
 };
 
-function editProfile() {
-  // Implement edit profile logic
-  console.log("Edit profile");
+function startEditing() {
+  editedInfo.fullName = userInfo.fullName;
+  editedInfo.email = userInfo.email;
+  editedInfo.phone = userInfo.phone;
+  isEditing.value = true;
+}
+
+function cancelEditing() {
+  isEditing.value = false;
+}
+
+async function saveChanges() {
+  loading.value = true;
+  error.value = null;
+  try {
+    const response = await axios.put(`/user/updateUser/${userID}`, {
+      Username: editedInfo.fullName,
+      Email: editedInfo.email,
+      Phone: editedInfo.phone,
+    });
+    if (response.data.success) {
+      userInfo.fullName = editedInfo.fullName;
+      userInfo.email = editedInfo.email;
+      userInfo.phone = editedInfo.phone;
+      isEditing.value = false;
+    } else {
+      throw new Error("Cập nhật không thành công");
+    }
+  } catch (err) {
+    console.error("Error updating user info:", err);
+    error.value = "Không thể cập nhật thông tin người dùng. Vui lòng thử lại sau.";
+  } finally {
+    loading.value = false;
+  }
 }
 
 function addAddress() {
-  // Implement add address logic
   console.log("Add new address");
+  // Implement add address logic
 }
 
 function showPointsHistory() {
-  // Implement show points history logic
   console.log("Show points history");
+  // Implement show points history logic
 }
 
 function logout() {
   localStorage.removeItem("userToken");
-  // Thực hiện các hành động khác khi đăng xuất, ví dụ: chuyển hướng về trang đăng nhập
-  console.log("User logged out");
-  window.location.href = "/form-login"; // Hoặc bất kỳ đường dẫn nào bạn muốn chuyển đến sau khi đăng xuất
+  localStorage.removeItem("userID");
+  router.push("/form-login");
 }
 </script>
 

@@ -139,4 +139,7 @@ const getUserInfo = async (req, res) => {
         res.status(500).json({ error: 'Lỗi khi truy vấn cơ sở dữ liệu' });
     }
 }
+
+
+
 export { createAccount, loginAccount, getUserName, getUserInfo }

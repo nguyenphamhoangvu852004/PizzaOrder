@@ -34,7 +34,7 @@
             <a href="/">
               <button class="continue-btn">Tiếp Tục Mua Hàng</button>
             </a>
-            <a href="/payment">
+            <a>
               <button class="checkout-btn" @click="proceedToPayment">
                 Thanh Toán
               </button>
@@ -99,7 +99,7 @@ const totalPrice = computed(() => {
 
 const proceedToPayment = () => {
   // Logic để tiến hành thanh toán
-  alert("Proceeding to payment...");
+  window.location.href = "/payment";
 };
 </script>
 
