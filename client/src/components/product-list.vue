@@ -2,7 +2,12 @@
   <section class="section">
     <div class="container">
       <h2 class="title is-2">Sản phẩm của chúng tôi</h2>
-      <div class="columns is-multiline">
+      <div v-if="loading" class="has-text-centered">
+        <span class="icon is-large">
+          <i class="fas fa-spinner fa-pulse fa-3x"></i>
+        </span>
+      </div>
+      <div v-else class="columns is-multiline">
         <div
           v-for="(product, index) in products"
           :key="index"
@@ -36,14 +41,18 @@ import { ref, onMounted } from "vue";
 import axios from "@/axios"; // Import axios từ file axios.js
 
 const products = ref([]);
+const loading = ref(true);
 
 const getAllProduct = async () => {
+  loading.value = true;
   try {
     const result = await axios.get("product/getAllProduct");
     products.value = result.data.data;
     console.log(products.value);
   } catch (error) {
     console.log("Error fetching products:", error);
+  } finally {
+    loading.value = false;
   }
 };
 
