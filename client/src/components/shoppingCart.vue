@@ -1,7 +1,7 @@
 <template>
   <section class="section">
     <div class="container">
-      <h2 class="title is-2">Giỏ Hàng</h2>
+      <h2 class="title is-2">Shopping Cart</h2>
       <div class="cart-container">
         <div class="list-products">
           <div
@@ -24,19 +24,19 @@
         </div>
         <div class="cart-summary">
           <div class="total">
-            <h3>Tổng Tiền</h3>
+            <h3>Total Amount</h3>
             <p>{{ totalPrice }} đ</p>
           </div>
           <div class="option">
             <button class="remove-all-btn" @click="removeAllProducts">
-              Xóa Tất Cả
+              Remove all
             </button>
             <a href="/">
-              <button class="continue-btn">Tiếp Tục Mua Hàng</button>
+              <button class="continue-btn">Continue shopping</button>
             </a>
             <a>
               <button class="checkout-btn" @click="proceedToPayment">
-                Thanh Toán
+                Go to payment page
               </button>
             </a>
           </div>

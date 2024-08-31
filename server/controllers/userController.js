@@ -121,6 +121,7 @@ const getUserName = async (req, res) => {
         res.status(500).json({ error: 'Lỗi khi truy vấn cơ sở dữ liệu' });
     }
 };
+
 const getUserInfo = async (req, res) => {
     const id = req.params.id;
 
@@ -140,6 +141,132 @@ const getUserInfo = async (req, res) => {
     }
 }
 
+const updateUser = async (req, res) => {
+    const id = req.params.id;
+    const { Username, Phone, Email } = req.body;
+
+    try {
+        // Kiểm tra xem có dữ liệu được gửi để cập nhật không
+        if (!Username && !Phone && !Email) {
+            return res.status(400).json({
+                success: false,
+                message: 'Không có thông tin nào được cung cấp để cập nhật'
+            });
+        }
+
+        // Tạo mảng chứa các trường cần cập nhật và giá trị tương ứng
+        const updateFields = [];
+        const values = [];
+
+        if (Username) {
+            updateFields.push('Username = ?');
+            values.push(Username);
+        }
+        if (Phone) {
+            updateFields.push('Phone = ?');
+            values.push(Phone);
+        }
+        if (Email) {
+            updateFields.push('Email = ?');
+            values.push(Email);
+        }
+
+        // Thêm ID vào cuối mảng values
+        values.push(id);
+
+        // Tạo câu truy vấn SQL động
+        const query = `UPDATE Accounts SET ${updateFields.join(', ')} WHERE AccountID = ?`;
+
+        // Thực hiện truy vấn
+        const [result] = await db.query(query, values);
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({
+                success: false,
+                message: 'Không tìm thấy tài khoản với ID này hoặc không có thay đổi nào được thực hiện'
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: 'Cập nhật thông tin tài khoản thành công',
+            updatedFields: updateFields.map(field => field.split(' = ')[0])
+        });
+    } catch (error) {
+        console.error('Lỗi khi cập nhật thông tin người dùng:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Lỗi khi cập nhật thông tin người dùng',
+            error: error.message
+        });
+    }
+};
+
+const updateAddress = async (req, res) => {
+    const id = req.params.id;
+    const { address } = req.body;
+
+    try {
+        // Thực hiện truy vấn cập nhật
+        const [result] = await db.query(`UPDATE Accounts SET Address = ? WHERE AccountID = ?`, [address, id]);
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({
+                success: false,
+                message: 'Không tìm thấy tài khoản với ID này hoặc không có thay đổi nào được thực hiện'
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: 'Cập nhật địa chỉ tài khoản thành công'
+        });
+    } catch (error) {
+        console.error('Lỗi khi cập nhật địa chỉ người dùng:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Lỗi khi cập nhật địa chỉ người dùng',
+            error: error.message
+        });
+    }
+};
+
+const getAddresss = async (req, res) => {
+    const id = req.params.id
+
+    try {
+        const [results] = await db.query('SELECT Address FROM Accounts WHERE AccountID = ?;', [id]);
+
+        if (results.length === 0) {
+            return res.status(404).json({ error: 'Không tìm thấy địa chỉ với ID này' });
+        }
+
+        res.json(results);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Lỗi khi truy vấn cơ sở dữ liệu' });
+    }
+}
+const removeAddress = async (req, res) => {
+    const id = req.params.id
+
+    try {
+        const [results] = await db.query(`UPDATE Accounts SET Address = '' WHERE AccountID = ?;`, [id]);
 
 
-export { createAccount, loginAccount, getUserName, getUserInfo }
+        if (results.affectedRows === 0) {
+            return res.status(404).json({
+                success: false,
+                message: 'Không tìm thấy địa chỉ với ID này hoặc không có thay đổi nào được thực hiện'
+            });
+        }
+        res.status(200).json({
+            success: true,
+            message: 'Xóa địa chỉ thành công.'
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Lỗi khi truy vấn cơ sở dữ liệu' });
+    }
+}
+export { createAccount, loginAccount, getUserName, getUserInfo, updateUser, updateAddress, getAddresss, removeAddress }

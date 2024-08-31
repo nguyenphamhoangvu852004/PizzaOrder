@@ -1,7 +1,7 @@
 <template>
   <div class="user-profile">
     <header class="profile-header">
-      <h1>Thông tin tài khoản</h1>
+      <h1>User Information</h1>
     </header>
     <div v-if="loading" class="loading-spinner">
       <span class="icon is-large">
@@ -10,14 +10,14 @@
     </div>
     <div v-else-if="error" class="error-message">
       <p>{{ error }}</p>
-      <button @click="fetchUserInfo" class="retry-button">Thử lại</button>
+      <button @click="fetchUserInfo" class="retry-button">Refresh</button>
     </div>
     <div v-else class="profile-content">
       <div class="profile-section">
-        <h2>Thông tin cá nhân</h2>
+        <h2>User Information Detail</h2>
         <div v-if="!isEditing">
           <div class="info-group">
-            <label>Họ tên:</label>
+            <label>Username:</label>
             <p>{{ userInfo.fullName }}</p>
           </div>
           <div class="info-group">
@@ -25,15 +25,15 @@
             <p>{{ userInfo.email }}</p>
           </div>
           <div class="info-group">
-            <label>Số điện thoại:</label>
+            <label>Phone Number:</label>
             <p>{{ userInfo.phone }}</p>
           </div>
-          <button @click="startEditing" class="edit-button">Chỉnh sửa</button>
+          <button @click="startEditing" class="edit-button">Edit</button>
         </div>
         <div v-else>
           <form @submit.prevent="saveChanges">
             <div class="info-group">
-              <label>Họ tên:</label>
+              <label>Username:</label>
               <input v-model="editedInfo.fullName" required />
             </div>
             <div class="info-group">
@@ -41,45 +41,72 @@
               <input v-model="editedInfo.email" type="email" required />
             </div>
             <div class="info-group">
-              <label>Số điện thoại:</label>
+              <label>Phone Number:</label>
               <input v-model="editedInfo.phone" type="tel" required />
             </div>
-            <button type="submit" class="save-button">Lưu thay đổi</button>
-            <button @click="cancelEditing" class="cancel-button">Hủy</button>
+            <button type="submit" class="save-button">Save</button>
+            <button @click="cancelEditing" class="cancel-button">Cancel</button>
           </form>
         </div>
       </div>
-
       <div class="profile-section">
-        <h2>Địa chỉ giao hàng</h2>
-        <p>Bạn chưa có địa chỉ giao hàng nào.</p>
-        <button @click="addAddress" class="add-button">Thêm địa chỉ mới</button>
+        <h2>Delivery address (One Address Only)</h2>
+        <div v-if="addresses == ''">
+          <p>Bạn chưa có địa chỉ giao hàng nào.</p>
+        </div>
+        <div v-else>
+          <ul>
+            <li v-for="(address, index) in addresses" :key="index">
+              {{ address }}
+              <button @click="removeAddress(index)" class="remove-button">
+                Xóa
+              </button>
+            </li>
+          </ul>
+        </div>
+        <div v-if="isAddingAddress">
+          <input
+            v-model="newAddress"
+            placeholder="Nhập địa chỉ mới"
+            class="address-input"
+          />
+          <button @click="saveNewAddress" class="save-button">Save</button>
+          <button @click="cancelAddingAddress" class="cancel-button">
+            Cancel
+          </button>
+        </div>
+        <button v-else @click="startAddingAddress" class="add-button">
+          Add new address
+        </button>
       </div>
 
       <div class="profile-section">
-        <h2>Điểm tích lũy</h2>
+        <h2>Accumulated points</h2>
         <p>Thông tin điểm tích lũy chưa có sẵn.</p>
         <p>Bạn cần mua hàng để tích lũy điểm.</p>
         <button @click="showPointsHistory" class="history-button">
-          Xem lịch sử điểm
+          View point history
         </button>
       </div>
     </div>
 
-    <button @click="logout" class="logout-button">Đăng xuất</button>
+    <button @click="logout" class="logout-button">Log Out</button>
   </div>
 </template>
 
 <script setup>
 import { onMounted, reactive, ref } from "vue";
 import axios from "@/axios.js";
-import { useRouter } from "vue-router";
 
-const router = useRouter();
 const userID = localStorage.getItem("userID");
 const loading = ref(true);
 const error = ref(null);
 const isEditing = ref(false);
+
+const addresses = ref();
+const isAddingAddress = ref(false);
+const newAddress = ref();
+
 const userInfo = reactive({
   fullName: null,
   email: null,
@@ -94,6 +121,7 @@ const editedInfo = reactive({
 onMounted(() => {
   checkLoggedIn();
   fetchUserInfo();
+  fetchAddresses(); // New function to fetch addresses
 });
 
 async function fetchUserInfo() {
@@ -102,6 +130,7 @@ async function fetchUserInfo() {
   try {
     await new Promise((resolve) => setTimeout(resolve, 1000));
     const response = await axios.get(`/user/userInfo/${userID}`);
+
     userInfo.fullName = response.data[0].Username;
     userInfo.email = response.data[0].Email;
     userInfo.phone = response.data[0].Phone;
@@ -116,22 +145,22 @@ async function fetchUserInfo() {
 const checkLoggedIn = () => {
   const userToken = localStorage.getItem("userToken");
   if (!userToken) {
-    router.push("/form-login");
+    window.location.href = "/form-login";
   }
 };
 
-function startEditing() {
+const startEditing = () => {
   editedInfo.fullName = userInfo.fullName;
   editedInfo.email = userInfo.email;
   editedInfo.phone = userInfo.phone;
   isEditing.value = true;
-}
+};
 
-function cancelEditing() {
+const cancelEditing = () => {
   isEditing.value = false;
-}
+};
 
-async function saveChanges() {
+const saveChanges = async () => {
   loading.value = true;
   error.value = null;
   try {
@@ -150,27 +179,89 @@ async function saveChanges() {
     }
   } catch (err) {
     console.error("Error updating user info:", err);
-    error.value = "Không thể cập nhật thông tin người dùng. Vui lòng thử lại sau.";
+    error.value =
+      "Không thể cập nhật thông tin người dùng. Vui lòng thử lại sau.";
   } finally {
     loading.value = false;
   }
-}
+};
 
-function addAddress() {
+const addAddress = () => {
   console.log("Add new address");
   // Implement add address logic
-}
+};
 
-function showPointsHistory() {
+const showPointsHistory = () => {
   console.log("Show points history");
   // Implement show points history logic
-}
+};
 
-function logout() {
+const logout = () => {
   localStorage.removeItem("userToken");
   localStorage.removeItem("userID");
-  router.push("/form-login");
-}
+  window.location.href = "/form-login";
+};
+
+const fetchAddresses = async () => {
+  try {
+    // Assume we have an API endpoint to fetch addresses
+    const response = await axios.get(`user/getAddress/${userID}`);
+    addresses.value = [response.data[0].Address];
+  } catch (err) {
+    console.error("Error fetching addresses:", err);
+    // Handle error (maybe show a message to the user)
+  }
+};
+
+const startAddingAddress = () => {
+  isAddingAddress.value = true;
+};
+
+const cancelAddingAddress = () => {
+  isAddingAddress.value = false;
+  newAddress.value = "";
+};
+
+//Bug Chõ nàyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy // Chỗ này khi mà người dùng thêm mới địa chỉ, thì nó thay thế luôn cái db cũ, như là update
+// 1 người - 1 địa chỉ
+const saveNewAddress = async () => {
+  if (newAddress.value.trim() === "") {
+    // Show an error message or handle empty input
+    return;
+  }
+
+  try {
+    // Assume we have an API endpoint to add a new address
+    const response = await axios.put(`user/addAddress/${userID}`, {
+      address: newAddress.value,
+    });
+    if (response.data.success) {
+      newAddress.value = "";
+      isAddingAddress.value = false;
+      window.location.href = "/user";
+    } else {
+      throw new Error("Không thể thêm địa chỉ mới");
+    }
+  } catch (err) {
+    console.error("Error adding new address:", err);
+    // Handle error (maybe show a message to the user)
+  }
+};
+
+const removeAddress = async (index) => {
+  try {
+    // Assume we have an API endpoint to remove an address
+    const response = await axios.put(`/user/removeAddress/${userID}`);
+    if (response.data.success) {
+      addresses.value = "";
+    } else {
+      throw new Error("Không thể xóa địa chỉ");
+    }
+  } catch (err) {
+    console.error("Error removing address:", err);
+    // Handle error (maybe show a message to the user)
+  }
+};
 </script>
 
 <style src="../styles/components/user.css" scoped></style>

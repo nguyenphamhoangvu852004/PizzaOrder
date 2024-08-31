@@ -1,7 +1,7 @@
 <template>
   <section class="section">
     <div class="container">
-      <h2 class="title is-2">Sản phẩm của chúng tôi</h2>
+      <h2 class="title is-2">Our products</h2>
       <div v-if="loading" class="has-text-centered">
         <span class="icon is-large">
           <i class="fas fa-spinner fa-pulse fa-3x"></i>
@@ -24,9 +24,9 @@
               <p class="subtitle is-6">{{ product.Price }} đ</p>
             </div>
             <div class="card-footer">
-              <a @click="" class="card-footer-item">Chi Tiết</a>
+              <a @click="" class="card-footer-item">Detail</a>
               <a @click="addToCart(product)" class="card-footer-item">
-                Thêm vào giỏ
+                Add to cart
               </a>
             </div>
           </div>
