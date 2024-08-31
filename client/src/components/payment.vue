@@ -4,6 +4,8 @@
 
     <div class="bill-container">
       <h2 class="subtitle">Đơn đặt hàng</h2>
+      <h2 class="subtitle">Địa chỉ giao hàng: {{ addresses }}</h2>
+
       <div v-if="cartItems.length > 0" class="product-list">
         <div
           v-for="(item, index) in cartItems"
@@ -40,27 +42,37 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-
+import axios from "@/axios";
+const addresses = ref();
 const cartItems = ref([]);
 const totalAmount = ref(0);
 const userId = localStorage.getItem("userID"); // Lấy ID người dùng từ localStorage
 
 onMounted(() => {
   loadCartItems(userId);
+  fetchAddresses();
 });
 
 const loadCartItems = (userId) => {
   const storedCart = localStorage.getItem("cart");
-  console.log("Stored Cart:", storedCart); // Kiểm tra giá trị này
 
   if (storedCart) {
     const cartData = JSON.parse(storedCart);
     cartItems.value = cartData[userId] || []; // Lấy giỏ hàng của người dùng
-    console.log("Parsed Cart Items:", cartItems.value); // Kiểm tra giá trị sau khi phân tích cú pháp
     calculateTotalAmount();
   }
 };
-
+const fetchAddresses = async () => {
+  try {
+    // Assume we have an API endpoint to fetch addresses
+    const response = await axios.get(`user/getAddress/${userId}`);
+    addresses.value = [response.data[0].Address];
+    addresses.value = addresses.value[0];
+  } catch (err) {
+    console.error("Error fetching addresses:", err);
+    // Handle error (maybe show a message to the user)
+  }
+};
 const calculateTotalAmount = () => {
   totalAmount.value = cartItems.value.reduce((total, item) => {
     return total + parseFloat(item.price) * item.quantity; // Chuyển đổi giá thành số
