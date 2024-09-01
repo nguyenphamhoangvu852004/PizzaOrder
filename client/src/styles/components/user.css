@@ -1,43 +1,67 @@
 .user-profile {
-    max-width: 800px;
-    margin: 0 auto;
+    max-width: 900px;
+    margin: 40px auto;
     padding: 20px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f5f5f5;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    font-family: 'Roboto', sans-serif;
+    background-color: #f8f9fa;
+    border-radius: 15px;
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
 }
 
 .profile-header {
-    background-color: #006491;
-    color: white;
-    padding: 30px;
-    text-align: center;
-    margin-bottom: 30px;
-    border-radius: 10px 10px 0 0;
+    display: flex;
+    align-items: center;
+    background-color: #343a40;
+    color: #fff;
+    padding: 20px;
+    border-radius: 15px 15px 0 0;
 }
 
 .profile-header h1 {
-    margin: 0;
     font-size: 28px;
-    font-weight: 600;
+    font-weight: 700;
+    margin: 0;
+    flex-grow: 1;
+}
+
+.profile-nav {
+    display: flex;
+    justify-content: space-around;
+    background-color: #495057;
+    padding: 15px 0;
+    border-radius: 0 0 15px 15px;
+    margin-bottom: 30px;
+}
+
+.nav-button {
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    color: #ffffff;
+    transition: color 0.3s ease, transform 0.2s;
+}
+
+.nav-button:hover {
+    color: #17a2b8;
+    transform: translateY(-2px);
 }
 
 .profile-content {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    overflow: hidden;
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .profile-section {
-    padding: 25px;
-    border-bottom: 1px solid #e0e0e0;
+    padding: 20px;
+    border-bottom: 1px solid #dee2e6;
     transition: background-color 0.3s ease;
 }
 
 .profile-section:hover {
-    background-color: #f9f9f9;
+    background-color: #f1f1f1;
 }
 
 .profile-section:last-child {
@@ -45,36 +69,36 @@
 }
 
 .profile-section h2 {
-    color: #006491;
-    margin-top: 0;
-    margin-bottom: 20px;
     font-size: 22px;
+    margin-bottom: 20px;
     font-weight: 600;
+    color: #343a40;
 }
 
 .info-group {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     display: flex;
     align-items: center;
 }
 
 .info-group label {
     font-weight: 600;
-    margin-right: 15px;
-    min-width: 120px;
-    color: #333;
+    margin-right: 20px;
+    min-width: 130px;
+    color: #495057;
 }
 
 .info-group p {
     margin: 0;
-    color: #555;
+    color: #6c757d;
+    font-size: 16px;
 }
 
 .address-item {
-    margin-bottom: 15px;
-    padding: 10px;
-    background-color: #f0f0f0;
-    border-radius: 5px;
+    padding: 12px;
+    background-color: #e9ecef;
+    border-radius: 8px;
+    margin-bottom: 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -89,57 +113,50 @@
 .points {
     font-size: 40px;
     font-weight: bold;
-    color: #e31837;
+    color: #28a745;
     margin-right: 10px;
 }
 
 .points-label {
-    font-size: 18px;
-    color: #666;
+    font-size: 16px;
+    color: #6c757d;
 }
 
 button {
-    background-color: #006491;
+    background-color: #007bff;
     color: white;
     border: none;
     padding: 12px 20px;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
     font-size: 16px;
-    transition: all 0.3s ease;
     font-weight: 500;
+    transition: all 0.3s ease;
 }
 
 button:hover {
-    background-color: #004e70;
+    background-color: #0056b3;
     transform: translateY(-2px);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .edit-button,
 .add-button,
 .history-button {
-    display: inline-block;
     margin-top: 20px;
+    display: inline-block;
 }
 
 .logout-button {
-    background-color: #d9534f;
-    color: white;
-    padding: 12px 25px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 30px;
+    background-color: #dc3545;
+    padding: 14px 30px;
     font-size: 16px;
-    font-weight: 500;
-    transition: all 0.3s ease;
+    font-weight: 600;
+    margin-top: 40px;
 }
 
 .logout-button:hover {
-    background-color: #c9302c;
-    transform: translateY(-2px);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    background-color: #bd2130;
 }
 
 .loading-spinner,
@@ -147,100 +164,111 @@ button:hover {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 200px;
+    height: 250px;
     flex-direction: column;
 }
 
 .error-message p {
-    color: #d9534f;
+    color: #dc3545;
     font-size: 18px;
     margin-bottom: 15px;
 }
 
 .retry-button {
     margin-top: 15px;
-    padding: 10px 20px;
-    background-color: #4CAF50;
+    padding: 12px 22px;
+    background-color: #28a745;
     color: white;
     border: none;
     cursor: pointer;
-    border-radius: 5px;
+    border-radius: 8px;
     font-size: 16px;
     transition: all 0.3s ease;
 }
 
 .retry-button:hover {
-    background-color: #45a049;
-    transform: translateY(-2px);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    background-color: #218838;
 }
 
 .info-group input {
     width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+    padding: 12px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
     font-size: 16px;
     transition: border-color 0.3s ease;
 }
 
 .info-group input:focus {
-    border-color: #006491;
+    border-color: #007bff;
     outline: none;
-    box-shadow: 0 0 5px rgba(0, 100, 145, 0.2);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
 .save-button,
 .cancel-button {
-    margin-right: 15px;
+    margin-right: 12px;
 }
 
+.cancel-button {
+    background-color: #dc3545;
+}
+
+.cancel-button:hover {
+    background-color: #bd2130;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+
 .address-input {
-    width: calc(100% - 22px);
-    padding: 10px;
+    width: calc(100% - 24px);
+    padding: 12px;
     margin-bottom: 15px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
     font-size: 16px;
     transition: border-color 0.3s ease;
 }
 
 .address-input:focus {
-    border-color: #006491;
+    border-color: #007bff;
     outline: none;
-    box-shadow: 0 0 5px rgba(0, 100, 145, 0.2);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
 .remove-button {
-    margin-left: 10px;
-    padding: 5px 10px;
-    background-color: #ff4d4d;
+    padding: 6px 12px;
+    background-color: #dc3545;
     color: white;
     border: none;
     cursor: pointer;
-    border-radius: 3px;
+    border-radius: 6px;
     font-size: 14px;
     transition: all 0.3s ease;
 }
 
 .remove-button:hover {
-    background-color: #ff3333;
-    transform: translateY(-2px);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    background-color: #bd2130;
 }
 
 @media (max-width: 600px) {
     .user-profile {
-        padding: 10px;
+        padding: 20px;
     }
 
     .profile-header {
+        flex-direction: column;
         padding: 20px;
+        text-align: center;
+    }
+
+    .nav-button {
+        font-size: 14px;
     }
 
     .profile-section {
-        padding: 20px;
+        padding: 15px;
     }
 
     .info-group {
@@ -249,11 +277,44 @@ button:hover {
     }
 
     .info-group label {
-        margin-bottom: 5px;
+        margin-bottom: 8px;
     }
 
     button {
         width: 100%;
-        margin-bottom: 10px;
+        margin-bottom: 12px;
     }
+
+    .avatar-container {
+        width: 100px;
+        height: 100px;
+    }
+}
+
+.avatar-container {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 10px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid #ffffff;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
+}
+
+.avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.upload-button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    font-size: 14px;
+    border-radius: 5px;
+}
+
+.upload-button:hover {
+    background-color: #0056b3;
 }

@@ -7,6 +7,9 @@ import product_detail from "../components/product-detail.vue"
 import shopping_cart from "../components/shoppingCart.vue"
 import payment from "../components/payment.vue"
 import user from "../components/user.vue"
+import messages from "../components/messages.vue"
+import address from "../components/address.vue"
+import history from "../components/history.vue"
 const routes = [
   {
     path: '/',
@@ -37,6 +40,18 @@ const routes = [
     path: '/user',
     component: user
   },
+  , {
+    path: '/messages',
+    component: messages
+  }
+  , {
+    path: '/address',
+    component: address
+  },
+  {
+    path: '/history',
+    component: history
+  }
 ]
 
 const router = createRouter({

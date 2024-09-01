@@ -24,7 +24,7 @@
               <p class="subtitle is-6">{{ product.Price }} đ</p>
             </div>
             <div class="card-footer">
-              <a @click="" class="card-footer-item">Detail</a>
+              <a @click="" class="card-footer-item"> Detail</a>
               <a @click="addToCart(product)" class="card-footer-item">
                 Add to cart
               </a>

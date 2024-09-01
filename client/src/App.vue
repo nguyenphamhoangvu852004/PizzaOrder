@@ -68,7 +68,11 @@
       <div class="footer-right">
         <div class="footer-social">
           <a href="https://www.facebook.com/profile.php?id=61556666886780">
-            <img src="/images/facebook-icon.png" alt="Facebook" />
+            <img
+              style="width: 55px"
+              src="/images/facebook-icon.png"
+              alt="Facebook"
+            />
           </a>
           <a href="#">
             <img src="/images/instagram-icon.png" alt="Instagram" />

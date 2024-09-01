@@ -3,6 +3,23 @@
     <header class="profile-header">
       <h1>User Information</h1>
     </header>
+    <nav class="profile-nav">
+      <button @click="goToSection('orders')" class="nav-button">
+        <i class="fa-solid fa-cart-shopping" style="color: #ffffff"></i> Orders
+      </button>
+      <button @click="goToSection('messages')" class="nav-button">
+        <i class="fa-solid fa-message" style="color: #ffffff"></i> Messages
+      </button>
+      <button @click="goToSection('history')" class="nav-button">
+        <i class="fa-solid fa-bag-shopping" style="color: #ffffff"></i> History
+      </button>
+      <button @click="goToSection('address')" class="nav-button">
+        <i class="fa-solid fa-location-dot" style="color: #ffffff"></i> Address
+      </button>
+      <button @click="goToSection('payment')" class="nav-button">
+        <i class="fa-solid fa-money-bill" style="color: #ffffff"></i> Payment
+      </button>
+    </nav>
     <div v-if="loading" class="loading-spinner">
       <span class="icon is-large">
         <i class="fas fa-spinner fa-pulse fa-3x"></i>
@@ -10,9 +27,29 @@
     </div>
     <div v-else-if="error" class="error-message">
       <p>{{ error }}</p>
-      <button @click="fetchUserInfo" class="retry-button">Refresh</button>
+      <button @click="fetchUserInfo" class="retry-button">
+        <i class="fa-solid fa-arrows-rotate" style="color: #ffffff"></i> Refresh
+      </button>
     </div>
     <div v-else class="profile-content">
+      <div class="profile-header">
+        <div class="avatar-section">
+          <div class="avatar-container">
+            <img :src="userAvatar" alt="User Avatar" class="avatar-img" />
+          </div>
+          <input
+            type="file"
+            @change="updateAvatar"
+            id="avatar-upload"
+            style="display: none"
+          />
+          <button @click="triggerFileInput" class="upload-button">
+            <i class="fa-solid fa-upload" style="color: #ffffff"></i> Update
+            Image
+          </button>
+        </div>
+      </div>
+
       <div class="profile-section">
         <h2>User Information Detail</h2>
         <div v-if="!isEditing">
@@ -28,7 +65,9 @@
             <label>Phone Number:</label>
             <p>{{ userInfo.phone }}</p>
           </div>
-          <button @click="startEditing" class="edit-button">Edit</button>
+          <button @click="startEditing" class="edit-button">
+            <i class="fa-solid fa-pen" style="color: #ffffff"></i> Edit
+          </button>
         </div>
         <div v-else>
           <form @submit.prevent="saveChanges">
@@ -44,11 +83,16 @@
               <label>Phone Number:</label>
               <input v-model="editedInfo.phone" type="tel" required />
             </div>
-            <button type="submit" class="save-button">Save</button>
-            <button @click="cancelEditing" class="cancel-button">Cancel</button>
+            <button type="submit" class="save-button">
+              <i class="fa-solid fa-check" style="color: #ffffff"></i> Save
+            </button>
+            <button @click="cancelEditing" class="cancel-button">
+              <i class="fa-solid fa-x" style="color: #ffffff"></i> Cancel
+            </button>
           </form>
         </div>
       </div>
+
       <div class="profile-section">
         <h2>Delivery address (One Address Only)</h2>
         <div v-if="addresses == ''">
@@ -59,7 +103,7 @@
             <li v-for="(address, index) in addresses" :key="index">
               {{ address }}
               <button @click="removeAddress(index)" class="remove-button">
-                Xóa
+                <i class="fa-solid fa-x" style="color: #ffffff"></i> Delete
               </button>
             </li>
           </ul>
@@ -76,7 +120,8 @@
           </button>
         </div>
         <button v-else @click="startAddingAddress" class="add-button">
-          Add new address
+          <i class="fa-solid fa-plus" style="color: #ffffff"></i> Add new
+          address
         </button>
       </div>
 
@@ -90,13 +135,20 @@
       </div>
     </div>
 
-    <button @click="logout" class="logout-button">Log Out</button>
+    <button @click="logout" class="logout-button">
+      <i
+        class="fa-solid fa-arrow-right-from-bracket"
+        style="color: #ffffff"
+      ></i>
+      Log Out
+    </button>
   </div>
 </template>
 
 <script setup>
 import { onMounted, reactive, ref } from "vue";
 import axios from "@/axios.js";
+const userAvatar = ref("/images/My_Logo.jpg");
 
 const userID = localStorage.getItem("userID");
 const loading = ref(true);
@@ -262,6 +314,28 @@ const removeAddress = async (index) => {
     // Handle error (maybe show a message to the user)
   }
 };
+
+function goToSection(section) {
+  switch (section) {
+    case "orders":
+      window.location.href = "/shopping-cart";
+      break;
+    case "messages":
+      window.location.href = "/messages";
+      break;
+    case "history":
+      window.location.href = "/history";
+      break;
+    case "address":
+      window.location.href = "/address";
+      break;
+    case "payment":
+      window.location.href = "/payment";
+      break;
+    default:
+      break;
+  }
+}
 </script>
 
 <style src="../styles/components/user.css" scoped></style>
