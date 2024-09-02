@@ -10,11 +10,11 @@ const verifyToken = (req, res, next) => {
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        req.userId = decoded.id;
+        req.userId = decoded.id; // Lưu userId vào request để sử dụng sau này
         next();
     } catch (error) {
         return res.status(401).json({ message: "Token không hợp lệ hoặc đã hết hạn" });
     }
 };
 
-export { verifyToken }
+export { verifyToken };

@@ -43,7 +43,7 @@ app.use('/api/v1/user', userRoutes)
 
 // Database connection and server start
 mySqlPool
-    .query('SHOW DATABASES')
+    .query(`SHOW DATABASES LIKE '${process.env.DB_DATABASE}'`)
     .then(async () => {
         console.log(`DATABASE ${process.env.DB_DATABASE} CONNECTED SUCCESSFULLY...`)
         app.listen(port, () => {

@@ -47,7 +47,7 @@ const addresses = ref();
 const cartItems = ref([]);
 const totalAmount = ref(0);
 const userId = localStorage.getItem("userID"); // Lấy ID người dùng từ localStorage
-
+const token = localStorage.getItem("userToken");
 onMounted(() => {
   loadCartItems(userId);
   fetchAddresses();
@@ -65,7 +65,11 @@ const loadCartItems = (userId) => {
 const fetchAddresses = async () => {
   try {
     // Assume we have an API endpoint to fetch addresses
-    const response = await axios.get(`user/getAddress/${userId}`);
+    const response = await axios.get(`user/getAddress/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`, // Đảm bảo token được gửi chính xác trong headers
+      },
+    });
     addresses.value = [response.data[0].Address];
     addresses.value = addresses.value[0];
   } catch (err) {

@@ -169,7 +169,7 @@ const editedInfo = reactive({
   email: "",
   phone: "",
 });
-
+const token = localStorage.getItem("userToken");
 onMounted(() => {
   checkLoggedIn();
   fetchUserInfo();
@@ -181,7 +181,11 @@ async function fetchUserInfo() {
   error.value = null;
   try {
     await new Promise((resolve) => setTimeout(resolve, 1000));
-    const response = await axios.get(`/user/userInfo/${userID}`);
+    const response = await axios.get(`/user/userInfo/${userID}`, {
+      headers: {
+        Authorization: `Bearer ${token}`, // Gửi token ở đây
+      },
+    });
 
     userInfo.fullName = response.data[0].Username;
     userInfo.email = response.data[0].Email;
@@ -216,11 +220,19 @@ const saveChanges = async () => {
   loading.value = true;
   error.value = null;
   try {
-    const response = await axios.put(`/user/updateUser/${userID}`, {
-      Username: editedInfo.fullName,
-      Email: editedInfo.email,
-      Phone: editedInfo.phone,
-    });
+    const response = await axios.put(
+      `/user/updateUser/${userID}`,
+      {
+        Username: editedInfo.fullName,
+        Email: editedInfo.email,
+        Phone: editedInfo.phone,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`, // Gửi token ở đây
+        },
+      }
+    );
     if (response.data.success) {
       userInfo.fullName = editedInfo.fullName;
       userInfo.email = editedInfo.email;
@@ -257,7 +269,11 @@ const logout = () => {
 const fetchAddresses = async () => {
   try {
     // Assume we have an API endpoint to fetch addresses
-    const response = await axios.get(`user/getAddress/${userID}`);
+    const response = await axios.get(`user/getAddress/${userID}`, {
+      headers: {
+        Authorization: `Bearer ${token}`, // Gửi token ở đây
+      },
+    });
     addresses.value = [response.data[0].Address];
   } catch (err) {
     console.error("Error fetching addresses:", err);
@@ -284,9 +300,18 @@ const saveNewAddress = async () => {
 
   try {
     // Assume we have an API endpoint to add a new address
-    const response = await axios.put(`user/addAddress/${userID}`, {
-      address: newAddress.value,
-    });
+    const response = await axios.put(
+      `user/addAddress/${userID}`,
+
+      {
+        address: newAddress.value,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`, // Gửi token ở đây
+        },
+      }
+    );
     if (response.data.success) {
       newAddress.value = "";
       isAddingAddress.value = false;
@@ -299,11 +324,14 @@ const saveNewAddress = async () => {
     // Handle error (maybe show a message to the user)
   }
 };
-
 const removeAddress = async (index) => {
   try {
-    // Assume we have an API endpoint to remove an address
-    const response = await axios.put(`/user/removeAddress/${userID}`);
+    const response = await axios.put(`/user/removeAddress/${userID}`, null, {
+      headers: {
+        Authorization: `Bearer ${token}`, // Đảm bảo token được gửi chính xác trong headers
+      },
+    });
+
     if (response.data.success) {
       addresses.value = "";
     } else {

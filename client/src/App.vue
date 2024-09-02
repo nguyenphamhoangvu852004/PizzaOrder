@@ -114,14 +114,18 @@ const checkLoginStatus = () => {
 
 // Hàm lấy tên người dùng từ ID
 const getUsernameFromID = async (id) => {
+  const token = localStorage.getItem("userToken"); // Giả sử bạn lưu token trong localStorage
   try {
-    const response = await axios.get(`user/username/${id}`);
+    const response = await axios.get(`user/username/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`, // Gửi token ở đây
+      },
+    });
     username.value = response.data.username; // Gán tên người dùng vào biến `username`
   } catch (error) {
     console.log("Error fetching username:", error);
   }
 };
-
 // Kiểm tra trạng thái đăng nhập khi component được mounted
 onMounted(() => {
   checkLoginStatus();
