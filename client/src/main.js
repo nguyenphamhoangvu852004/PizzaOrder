@@ -11,8 +11,6 @@ const app = Vue.createApp(App)
 
 // Sử dụng axios instance đã được cấu hình
 app.use(VueAxios, axiosInstance)
-app.use(Buefy, {
-    defaultNotificationPosition: 'is-bottom-right'
-})
+app.use(Buefy)
 app.use(router)
 app.mount('#app')
