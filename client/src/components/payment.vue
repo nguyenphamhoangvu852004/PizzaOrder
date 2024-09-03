@@ -87,9 +87,29 @@ const formatPrice = (price) => {
   return new Intl.NumberFormat("vi-VN").format(price);
 };
 
-const payment = () => {
-  alert(`Thanh Toán Thành Công. Quay Về Trang Chủ.`);
-  window.location.href = "/";
+const payment = async () => {
+  try {
+    //Tạo 1 đơn hàng cho user
+    const response = await axios.post(
+      `user/cart/createCart/${userId}`,
+      {},
+      {
+        headers: { authorization: `Bearer ${token}` },
+      }
+    );
+    if (!response.data.success) {
+      alert(`Đã có lỗi trong quá trình thanh toán`);
+      return;
+    }
+    try {
+      
+    } catch (error) {
+      console.log(error);
+    }
+    console.log(`Tạo thành công cart cho id: ${userId}`);
+  } catch (error) {
+    console.log(error);
+  }
 };
 </script>
 

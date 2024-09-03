@@ -3,6 +3,7 @@ import dotenv from "dotenv"
 import mySqlPool from "./config/db.js";
 import productRoutes from "./routes/productRoutes.js"
 import userRoutes from "./routes/userRoutes.js"
+import cartRoutes from "./routes/cartRoutes.js"
 import cors from "cors"
 
 // Load environment variables
@@ -40,6 +41,7 @@ const hostname = process.env.APP_HOSTNAME
 // Routes
 app.use('/api/v1/product', productRoutes)
 app.use('/api/v1/user', userRoutes)
+app.use('/api/v1/user/cart', cartRoutes)
 
 // Database connection and server start
 mySqlPool

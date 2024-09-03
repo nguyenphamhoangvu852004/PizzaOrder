@@ -3,7 +3,7 @@ import mySqlPool from "../config/db.js";
 
 const db = mySqlPool;
 
-export const addToCart = async (req, res) => {
+const addToCart = async (req, res) => {
     const { productId, quantity } = req.body;
     const userId = req.userId; // Lấy từ middleware xác thực
 
@@ -35,7 +35,7 @@ export const addToCart = async (req, res) => {
     }
 };
 
-export const getCart = async (req, res) => {
+const getCart = async (req, res) => {
     const userId = req.userId;
 
     try {
@@ -50,3 +50,51 @@ export const getCart = async (req, res) => {
         res.status(500).json({ success: false, message: "Lỗi khi lấy thông tin giỏ hàng" });
     }
 };
+
+const getCartFromID = async (req, res) => {
+    const id = req.userId;
+    try {
+        const [carts] = await db.query(`SELECT 
+    C.CartID, 
+    C.DateOfOrder, 
+    P.Name, 
+    P.Price, 
+    CI.Quantity,
+    (P.Price * CI.Quantity) AS TotalAmount  -- Tính tổng tiền
+FROM 
+    Carts C
+JOIN 
+    CartItems CI ON C.CartID = CI.CartID
+JOIN 
+    Products P ON CI.ProductID = P.ProductID
+WHERE 
+    C.AccountID = 1;`, [id])
+        res.status(200).json({ success: true, carts: carts });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: `"Lỗi khi lấy thông tin giỏ hàng từ ${id}"` });
+    }
+}
+
+const createCart = async (req, res) => {
+    const id = req.params.id
+    try {
+        const [response] = await db.query(`insert into Carts (AccountID) values (?) ;`, [id])
+        res.status(200).json({ success: true, response: response });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: `Có lỗi xảy ra khi tạo Cart cho ${id}` });
+    }
+}
+
+const addProductToCart = async (req, res) => {
+    const { CartID, ProductID, Quantity } = req.body
+    try {
+        const [response] = await db.query(`INSERT INTO CartItems (CartID, ProductID, Quantity) VALUES (?,?,?)`, [CartID], [ProductID], [Quantity])
+        res.status(200).json({ success: true, response: response });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: `Có lỗi xảy ra khi tạo Cart cho ${id}` });
+    }
+}
+export { addToCart, getCart, getCartFromID, createCart, addProductToCart }
