@@ -101,11 +101,8 @@ const payment = async () => {
       alert(`Đã có lỗi trong quá trình thanh toán`);
       return;
     }
-    try {
-      
-    } catch (error) {
-      console.log(error);
-    }
+    alert(`Bạn đã thanh toán thành công. Quay về Trang Chủ`);
+    window.location.href = "/";
     console.log(`Tạo thành công cart cho id: ${userId}`);
   } catch (error) {
     console.log(error);
