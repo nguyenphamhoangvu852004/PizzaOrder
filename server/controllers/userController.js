@@ -105,7 +105,7 @@ const loginAccount = async (req, res) => {
     }
 }
 const getUserName = async (req, res) => {
-    const id = req.params.id;
+    const id = req.userId
 
     try {
         const [results] = await db.query('SELECT Username FROM Accounts WHERE AccountID = ?', [id]);
@@ -123,7 +123,7 @@ const getUserName = async (req, res) => {
 };
 
 const getUserInfo = async (req, res) => {
-    const id = req.params.id;
+    const id = req.userId
 
     try {
         const [results] = await db.query('SELECT * FROM Accounts WHERE AccountID = ?', [id]);
@@ -142,7 +142,7 @@ const getUserInfo = async (req, res) => {
 }
 
 const updateUser = async (req, res) => {
-    const id = req.params.id;
+    const id = req.userId
     const { Username, Phone, Email } = req.body;
 
     try {
@@ -203,7 +203,7 @@ const updateUser = async (req, res) => {
 };
 
 const updateAddress = async (req, res) => {
-    const id = req.params.id;
+    const id = req.userId
     const { address } = req.body;
 
     try {
@@ -232,7 +232,7 @@ const updateAddress = async (req, res) => {
 };
 
 const getAddresss = async (req, res) => {
-    const id = req.params.id
+    const id = req.userId
 
     try {
         const [results] = await db.query('SELECT Address FROM Accounts WHERE AccountID = ?;', [id]);
@@ -248,7 +248,7 @@ const getAddresss = async (req, res) => {
     }
 }
 const removeAddress = async (req, res) => {
-    const id = req.params.id
+    const id = req.userId
 
     try {
         const [results] = await db.query(`UPDATE Accounts SET Address = '' WHERE AccountID = ?;`, [id]);

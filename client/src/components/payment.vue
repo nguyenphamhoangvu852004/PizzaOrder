@@ -43,11 +43,13 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import axios from "@/axios";
-const addresses = ref();
+
+const addresses = ref("");
 const cartItems = ref([]);
 const totalAmount = ref(0);
-const userId = localStorage.getItem("userID"); // Lấy ID người dùng từ localStorage
+const userId = localStorage.getItem("userID");
 const token = localStorage.getItem("userToken");
+
 onMounted(() => {
   loadCartItems(userId);
   fetchAddresses();
@@ -55,31 +57,28 @@ onMounted(() => {
 
 const loadCartItems = (userId) => {
   const storedCart = localStorage.getItem("cart");
-
   if (storedCart) {
     const cartData = JSON.parse(storedCart);
-    cartItems.value = cartData[userId] || []; // Lấy giỏ hàng của người dùng
+    cartItems.value = cartData[userId] || [];
     calculateTotalAmount();
+    console.log(cartItems);
   }
 };
+
 const fetchAddresses = async () => {
   try {
-    // Assume we have an API endpoint to fetch addresses
-    const response = await axios.get(`user/getAddress/${userId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`, // Đảm bảo token được gửi chính xác trong headers
-      },
+    const response = await axios.get(`user/getAddress`, {
+      headers: { Authorization: `Bearer ${token}` },
     });
-    addresses.value = [response.data[0].Address];
-    addresses.value = addresses.value[0];
+    addresses.value = response.data[0].Address;
   } catch (err) {
     console.error("Error fetching addresses:", err);
-    // Handle error (maybe show a message to the user)
   }
 };
+
 const calculateTotalAmount = () => {
   totalAmount.value = cartItems.value.reduce((total, item) => {
-    return total + parseFloat(item.price) * item.quantity; // Chuyển đổi giá thành số
+    return total + parseFloat(item.price) * item.quantity;
   }, 0);
 };
 
@@ -89,23 +88,39 @@ const formatPrice = (price) => {
 
 const payment = async () => {
   try {
-    //Tạo 1 đơn hàng cho user
-    const response = await axios.post(
-      `user/cart/createCart/${userId}`,
+    // Tạo một đơn hàng mới
+    const createCartResponse = await axios.post(
+      `user/cart/createCart`,
       {},
-      {
-        headers: { authorization: `Bearer ${token}` },
-      }
+      { headers: { Authorization: `Bearer ${token}` } }
     );
-    if (!response.data.success) {
-      alert(`Đã có lỗi trong quá trình thanh toán`);
+
+    if (!createCartResponse.data.success) {
+      alert(`Đã có lỗi trong quá trình tạo đơn hàng`);
       return;
+    } else {
+      // console.log(createCartResponse.data.cartId);
     }
+
+    // Thêm từng sản phẩm vào giỏ hàng mới
+    for (const item of cartItems.value) {
+      await axios.post(
+        `user/cart/addProductToCart`,
+        {
+          CartID: createCartResponse.data.cartId,
+          ProductID: item.productID,
+          Quantity: item.quantity,
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+    }
+
     alert(`Bạn đã thanh toán thành công. Quay về Trang Chủ`);
+    // localStorage.removeItem("cart"); // Xóa giỏ hàng khỏi localStorage
     window.location.href = "/";
-    console.log(`Tạo thành công cart cho id: ${userId}`);
   } catch (error) {
-    console.log(error);
+    console.error(error);
+    alert(`Đã có lỗi trong quá trình thanh toán`);
   }
 };
 </script>

@@ -78,8 +78,10 @@ const loginButton = async () => {
         response.data.message || "Đăng nhập không thành công.";
     } else {
       localStorage.setItem("userToken", response.data.token);
+
       localStorage.setItem("userID", response.data.user.id);
       window.location.href = "/";
+
     }
   } catch (err) {
     if (err.response) {

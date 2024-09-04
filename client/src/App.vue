@@ -104,19 +104,18 @@ const checkLoginStatus = () => {
   const token = localStorage.getItem("userToken");
   if (token) {
     isLogged.value = true;
-    // Gọi hàm lấy tên người dùng khi đăng nhập thành công
-    const userID = localStorage.getItem("userID");
-    getUsernameFromID(userID);
+    getUsernameFromID();
   } else {
     isLogged.value = false;
   }
 };
 
 // Hàm lấy tên người dùng từ ID
-const getUsernameFromID = async (id) => {
-  const token = localStorage.getItem("userToken"); // Giả sử bạn lưu token trong localStorage
+const getUsernameFromID = async () => {
+  // Giả sử bạn lưu token trong localStorage
+  const token = localStorage.getItem("userToken");
   try {
-    const response = await axios.get(`user/username/${id}`, {
+    const response = await axios.get(`user/username`, {
       headers: {
         Authorization: `Bearer ${token}`, // Gửi token ở đây
       },

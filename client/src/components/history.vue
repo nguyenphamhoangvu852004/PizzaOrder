@@ -37,7 +37,7 @@ onMounted(() => {
 
 const getCartFromID = async () => {
   try {
-    const response = await axios.get(`user/cart/getCartFromID/${userID}`, {
+    const response = await axios.get(`user/cart/getCartFromID`, {
       headers: {
         Authorization: `Bearer ${userToken}`,
       },

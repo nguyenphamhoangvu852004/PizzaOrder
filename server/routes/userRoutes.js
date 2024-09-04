@@ -10,14 +10,14 @@ const router = e.Router()
 //GET ALL PRODUCTS LIST
 router.post("/sign-up", createAccount)
 router.post("/log-in", loginAccount)
-router.get("/username/:id", verifyToken, getUserName)
-router.get("/userInfo/:id", verifyToken, getUserInfo)
-router.put("/updateUser/:id", verifyToken, updateUser)
+router.get("/username", verifyToken, getUserName)
+router.get("/userInfo", verifyToken, getUserInfo)
+router.put("/updateUser", verifyToken, updateUser)
 router.post('/add', verifyToken, addToCart);
 router.get('/', verifyToken, getCart);
-router.put('/addAddress/:id', verifyToken, updateAddress);
-router.get('/getAddress/:id', verifyToken, getAddresss)
-router.put('/removeAddress/:id', verifyToken, removeAddress)
+router.put('/addAddress', verifyToken, updateAddress);
+router.get('/getAddress', verifyToken, getAddresss)
+router.put('/removeAddress', verifyToken, removeAddress)
 
 
 export default router

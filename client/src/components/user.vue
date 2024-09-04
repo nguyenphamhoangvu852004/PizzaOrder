@@ -181,7 +181,7 @@ async function fetchUserInfo() {
   error.value = null;
   try {
     await new Promise((resolve) => setTimeout(resolve, 1000));
-    const response = await axios.get(`/user/userInfo/${userID}`, {
+    const response = await axios.get(`/user/userInfo`, {
       headers: {
         Authorization: `Bearer ${token}`, // Gửi token ở đây
       },
@@ -221,7 +221,7 @@ const saveChanges = async () => {
   error.value = null;
   try {
     const response = await axios.put(
-      `/user/updateUser/${userID}`,
+      `/user/updateUser`,
       {
         Username: editedInfo.fullName,
         Email: editedInfo.email,
@@ -269,7 +269,7 @@ const logout = () => {
 const fetchAddresses = async () => {
   try {
     // Assume we have an API endpoint to fetch addresses
-    const response = await axios.get(`user/getAddress/${userID}`, {
+    const response = await axios.get(`user/getAddress`, {
       headers: {
         Authorization: `Bearer ${token}`, // Gửi token ở đây
       },
@@ -301,8 +301,7 @@ const saveNewAddress = async () => {
   try {
     // Assume we have an API endpoint to add a new address
     const response = await axios.put(
-      `user/addAddress/${userID}`,
-
+      `user/addAddress`,
       {
         address: newAddress.value,
       },
@@ -326,7 +325,7 @@ const saveNewAddress = async () => {
 };
 const removeAddress = async (index) => {
   try {
-    const response = await axios.put(`/user/removeAddress/${userID}`, null, {
+    const response = await axios.put(`/user/removeAddress`, null, {
       headers: {
         Authorization: `Bearer ${token}`, // Đảm bảo token được gửi chính xác trong headers
       },
