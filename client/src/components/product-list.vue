@@ -6,6 +6,7 @@
         <span class="icon is-large">
           <i class="fas fa-spinner fa-pulse fa-3x"></i>
         </span>
+        <p class="loading-message">Please Wait For Loading</p>
       </div>
       <div v-else class="columns is-multiline">
         <div
