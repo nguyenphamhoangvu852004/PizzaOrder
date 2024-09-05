@@ -11,7 +11,6 @@ let coords = ref({});
 
 navigator.geolocation.getCurrentPosition(
   (position) => {
-    console.log(position.coords);
     coords.value = position.coords;
   },
   (err) => {
@@ -20,6 +19,6 @@ navigator.geolocation.getCurrentPosition(
 );
 
 const openMap = () => {
-  window.location.href = `https://www.google.com/maps/@${coords.latitude},${coords.longitude}`;
+  console.log(position.coords);
 };
 </script>
