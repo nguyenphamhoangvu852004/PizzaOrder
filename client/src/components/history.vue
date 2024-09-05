@@ -42,10 +42,9 @@ const getCartFromID = async () => {
         Authorization: `Bearer ${userToken}`,
       },
     });
-    
+
     // Cập nhật carts với dữ liệu từ API
     carts.value = response.data.carts;
-
   } catch (error) {
     console.error("Error fetching cart data:", error);
   }
@@ -79,35 +78,4 @@ const groupedOrders = computed(() => {
 });
 </script>
 
-<style>
-#app {
-  font-family: Arial, sans-serif;
-  margin: 20px;
-}
-
-.order-list {
-  border: 1px solid #ccc;
-  padding: 20px;
-  border-radius: 10px;
-  background-color: #f9f9f9;
-}
-
-.order-item {
-  margin-bottom: 20px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #ddd;
-}
-
-h2 {
-  margin-top: 0;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  margin-bottom: 5px;
-}
-</style>
+<style src="../styles/components/history.css" scoped></style>

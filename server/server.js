@@ -18,18 +18,20 @@ const allowedOrigins = [
     'https://nguyenphamhoangvu.id.vn',
     'https://pizzaorder-2rtb.onrender.com'
 ];
-app.use(cors({
-    origin: function (origin, callback) {
-        if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-            callback(null, true)
-        } else {
-            callback(new Error('Not allowed by CORS'))
-        }
-    },
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
-    credentials: true
-}));
+// app.use(cors({
+//     origin: function (origin, callback) {
+//         if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+//             callback(null, true)
+//         } else {
+//             callback(new Error('Not allowed by CORS'))
+//         }
+//     },
+//     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+//     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+//     credentials: true
+// }));
+
+app.use(cors())
 
 // Middleware
 app.use(express.json());

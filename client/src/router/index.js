@@ -51,7 +51,10 @@ const routes = [
   {
     path: '/history',
     component: history
-  }
+  },
+  
+  
+  
 ]
 
 const router = createRouter({

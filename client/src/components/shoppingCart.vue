@@ -54,7 +54,7 @@ const products = ref([]);
 onMounted(() => {
   let userID = localStorage.getItem("userID");
   let cart = JSON.parse(localStorage.getItem("cart")) || {};
-
+  
   // Load products from cart for the current user
   if (cart[userID]) {
     products.value = cart[userID];
