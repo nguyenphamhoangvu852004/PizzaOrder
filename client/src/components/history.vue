@@ -15,6 +15,10 @@
           <li v-for="item in order.items" :key="item.Name">
             {{ item.Name }} - {{ item.Quantity }} x {{ item.Price }} VNĐ
           </li>
+          <div>
+            <!-- Hiển thị tình trạng đơn hàng ngẫu nhiên -->
+            <p>Tình trạng đơn hàng: {{ getRandomStatus() }}</p>
+          </div>
         </ul>
       </div>
     </div>
@@ -27,7 +31,7 @@ import axios from "@/axios";
 
 const userID = localStorage.getItem(`userID`);
 const userToken = localStorage.getItem(`userToken`);
-
+const listStatus = ref(["Đã Hoàn Thành", "Đang Xử Lý", "Thất Bại"]);
 // Khởi tạo carts bằng ref
 const carts = ref([]);
 
@@ -76,6 +80,12 @@ const groupedOrders = computed(() => {
 
   return orders;
 });
+
+// Hàm lấy tình trạng ngẫu nhiên
+const getRandomStatus = () => {
+  const randomIndex = Math.floor(Math.random() * listStatus.value.length);
+  return listStatus.value[randomIndex];
+};
 </script>
 
 <style src="../styles/components/history.css" scoped></style>
