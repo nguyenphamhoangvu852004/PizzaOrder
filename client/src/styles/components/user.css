@@ -1,181 +1,348 @@
-/* Các quy tắc chung cho máy tính và các thiết bị lớn hơn */
-
-body {
-    font-family: 'Poppins', sans-serif;
-    margin: 0;
-    padding: 0;
-    background: #1f242d;
-    color: #fff;
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
+/* Các quy tắc cho màn hình lớn và máy tính */
+.user-profile {
+    max-width: 900px;
+    margin: 40px auto;
     padding: 20px;
+    font-family: 'Roboto', sans-serif;
+    background-color: #f8f9fa;
+    border-radius: 15px;
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
 }
 
-.header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    padding: 20px 10%;
-    background: transparent;
+.profile-header {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    z-index: 100;
-}
-
-.logo {
-    font-size: 25px;
+    background-color: #343a40;
     color: #fff;
-    text-decoration: none;
-    font-weight: 600;
+    padding: 20px;
+    border-radius: 15px 15px 0 0;
 }
 
-.navbar a {
-    display: inline-block;
-    font-size: 18px;
-    color: #fff;
-    text-decoration: none;
-    font-weight: 500;
-    margin-left: 35px;
-    transition: 0.3s;
-}
-
-.navbar a:hover,
-.navbar a.active {
-    color: rgb(6, 208, 6);
-}
-
-.home {
-    position: relative;
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 70px 10% 0;
-}
-
-.home-content {
-    max-width: 600px;
-}
-
-.home-content h1 {
-    font-size: 56px;
+.profile-header h1 {
+    font-size: 28px;
     font-weight: 700;
-    margin: -3px 0;
+    margin: 0;
+    flex-grow: 1;
 }
 
-.home-content p {
+.profile-nav {
+    display: flex;
+    justify-content: space-around;
+    background-color: #495057;
+    padding: 15px 0;
+    border-radius: 0 0 15px 15px;
+    margin-bottom: 30px;
+}
+
+.nav-button {
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    color: #ffffff;
+    transition: color 0.3s ease, transform 0.2s;
+}
+
+.nav-button:hover {
+    color: #17a2b8;
+    transform: translateY(-2px);
+}
+
+.profile-content {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.profile-section {
+    padding: 20px;
+    border-bottom: 1px solid #dee2e6;
+    transition: background-color 0.3s ease;
+}
+
+.profile-section:hover {
+    background-color: #f1f1f1;
+}
+
+.profile-section:last-child {
+    border-bottom: none;
+}
+
+.profile-section h2 {
+    font-size: 22px;
+    margin-bottom: 20px;
+    font-weight: 600;
+    color: #343a40;
+}
+
+.info-group {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.info-group label {
+    font-weight: 600;
+    margin-right: 20px;
+    min-width: 130px;
+    color: #495057;
+}
+
+.info-group p {
+    margin: 0;
+    color: #6c757d;
     font-size: 16px;
 }
 
-.home-img img {
-    max-width: 450px;
+.address-item {
+    padding: 12px;
+    background-color: #e9ecef;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.social-media a {
-    display: inline-flex;
+.points-display {
+    display: flex;
+    align-items: baseline;
+    margin-bottom: 20px;
+}
+
+.points {
+    font-size: 40px;
+    font-weight: bold;
+    color: #28a745;
+    margin-right: 10px;
+}
+
+.points-label {
+    font-size: 16px;
+    color: #6c757d;
+}
+
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.edit-button,
+.add-button,
+.history-button {
+    margin-top: 20px;
+    display: inline-block;
+}
+
+.logout-button {
+    background-color: #dc3545;
+    padding: 14px 30px;
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: 40px;
+}
+
+.logout-button:hover {
+    background-color: #bd2130;
+}
+
+.loading-spinner,
+.error-message {
+    display: flex;
     justify-content: center;
     align-items: center;
-    width: 40px;
-    height: 40px;
-    background: transparent;
-    border: 2px solid rgb(6, 208, 6);
-    border-radius: 50%;
-    color: rgb(6, 208, 6);
-    text-decoration: none;
-    transition: .5s ease;
-    margin: 30px 15px 30px 0;
+    height: 250px;
+    flex-direction: column;
 }
 
-.social-media a:hover {
-    background-color: rgb(6, 208, 6);
-    color: #1f242d;
-    box-shadow: 0 0 20px rgb(6, 208, 6);
+.error-message p {
+    color: #dc3545;
+    font-size: 18px;
+    margin-bottom: 15px;
 }
 
-.btn {
-    display: inline-block;
-    padding: 12px 28px;
-    background: rgb(6, 208, 6);
-    border-radius: 40px;
-    box-shadow: 0 0 10px rgb(6, 208, 6);
+.retry-button {
+    margin-top: 15px;
+    padding: 12px 22px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
     font-size: 16px;
-    color: #1f242d;
-    letter-spacing: 1px;
-    text-decoration: none;
-    font-weight: 600;
+    transition: all 0.3s ease;
 }
 
-/* Các quy tắc cho điện thoại di động */
-@media (max-width: 768px) {
-    .header {
-        padding: 20px 5%;
+.retry-button:hover {
+    background-color: #218838;
+}
+
+.info-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+.info-group input:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.save-button,
+.cancel-button {
+    margin-right: 12px;
+}
+
+.cancel-button {
+    background-color: #dc3545;
+}
+
+.cancel-button:hover {
+    background-color: #bd2130;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.address-input {
+    width: calc(100% - 24px);
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+.address-input:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.remove-button {
+    padding: 6px 12px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.remove-button:hover {
+    background-color: #bd2130;
+}
+
+/* Responsive Styles */
+@media (max-width: 600px) {
+    .user-profile {
+        padding: 15px;
     }
 
-    .navbar a {
-        font-size: 16px;
-        margin-left: 20px;
+    .profile-header {
+        flex-direction: column;
+        text-align: center;
     }
 
-    .home-content h1 {
-        font-size: 36px;
+    .profile-header h1 {
+        font-size: 24px;
     }
 
-    .home-content p {
+    .profile-nav {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .nav-button {
         font-size: 14px;
+        margin: 10px 0;
     }
 
-    .home-img img {
-        max-width: 300px;
+    .profile-content {
+        padding: 15px;
     }
 
-    .social-media a {
-        width: 35px;
-        height: 35px;
-        border-width: 1px;
+    .profile-section {
+        padding: 15px;
     }
 
-    .btn {
-        padding: 10px 20px;
+    .info-group {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .info-group label {
+        margin-bottom: 8px;
+        min-width: unset;
+    }
+
+    .address-input {
+        width: calc(100% - 24px);
+        margin-bottom: 12px;
+    }
+
+    .avatar-container {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 10px;
+    }
+
+    .upload-button {
+        font-size: 12px;
+        padding: 8px 12px;
+    }
+
+    button {
+        width: 100%;
+        margin-bottom: 10px;
         font-size: 14px;
+        padding: 10px;
     }
 }
 
-@media (max-width: 480px) {
-    .header {
-        padding: 15px 2%;
-    }
+.avatar-container {
+    width: 120px;  /* Thay đổi kích thước của khung ảnh đại diện */
+    height: 120px;
+    margin-bottom: 10px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid #ffffff;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
+}
 
-    .navbar a {
-        font-size: 14px;
-        margin-left: 15px;
-    }
+.avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
 
-    .home-content h1 {
-        font-size: 28px;
-    }
+.upload-button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    font-size: 14px;
+    border-radius: 5px;
+}
 
-    .home-content p {
-        font-size: 12px;
-    }
-
-    .home-img img {
-        max-width: 200px;
-    }
-
-    .social-media a {
-        width: 30px;
-        height: 30px;
-        border-width: 1px;
-    }
-
-    .btn {
-        padding: 8px 16px;
-        font-size: 12px;
-    }
+.upload-button:hover {
+    background-color: #0056b3;
 }
