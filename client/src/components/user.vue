@@ -261,8 +261,12 @@ const showPointsHistory = () => {
 };
 
 const logout = () => {
-  localStorage.removeItem("userToken");
-  localStorage.removeItem("userID");
+  for (let i = localStorage.length - 1; i >= 0; i--) {
+    const key = localStorage.key(i);
+    if (key !== "cart") {
+      localStorage.removeItem(key);
+    }
+  }
   window.location.href = "/form-login";
 };
 
