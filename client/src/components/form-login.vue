@@ -4,7 +4,7 @@
       <section>
         <div>
           <h3>LOGIN FORM</h3>
-          <img src="/images/My_Logo.jpg" alt="" />
+          <img src="/images/My_Logo.jpg" alt="Logo" />
         </div>
 
         <b-field>
@@ -31,6 +31,7 @@
         <b-button @click="loginButton">Log In</b-button>
 
         <div v-if="generalError" class="error">{{ generalError }}</div>
+        <div><GoogleLogin :callback="callback" prompt auto-login /></div>
 
         <div style="display: flex; text-align: center; margin-top: 10px">
           <p>Not Have An Account Yet?</p>
@@ -42,12 +43,19 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import axios from "@/axios";
+import { decodeCredential } from "vue3-google-login";
 
+const user = ref(null);
+const isLoggedIn = ref(false);
 const account = ref({
   username: "",
   password: "",
+});
+const googleAccount = ref({
+  name: "",
+  email: "",
 });
 
 const usernameError = ref(null);
@@ -55,12 +63,13 @@ const passwordError = ref(null);
 const generalError = ref(null);
 
 const checkLoginStatus = () => {
-  const userData = localStorage.getItem("userToken");
-  if (userData) {
+  const userToken = localStorage.getItem("userToken");
+  if (userToken) {
+    // Lấy thông tin người dùng từ token hoặc API
+    isLoggedIn.value = true;
     window.location.href = "/user";
   }
 };
-
 const loginButton = async () => {
   usernameError.value = null;
   passwordError.value = null;
@@ -73,15 +82,12 @@ const loginButton = async () => {
     });
 
     if (!response.data.success) {
-      // Xử lý các trường hợp khác nếu cần
       generalError.value =
         response.data.message || "Đăng nhập không thành công.";
     } else {
       localStorage.setItem("userToken", response.data.token);
-
       localStorage.setItem("userID", response.data.user.id);
       window.location.href = "/";
-
     }
   } catch (err) {
     if (err.response) {
@@ -99,7 +105,46 @@ const loginButton = async () => {
   }
 };
 
-checkLoginStatus();
+const callback = async (response) => {
+  const googleToken = response.credential;
+
+  if (!googleToken) {
+    console.error("Không có token Google.");
+    return;
+  }
+  // const fullUserInformation = decodeCredential(response.credential); //Xem thông tin của tài khoản
+  // console.log(fullUserInformation);
+  console.log("Token:", googleToken); //Token ma google da ma hoa
+
+  const headers = {
+    Authorization: `Bearer ${googleToken}`,
+  };
+
+  try {
+    const serverResponse = await axios.post(
+      "/user/authGoogle/log-in", // Đảm bảo URL là chính xác
+      {},
+      { headers }
+    );
+
+    if (serverResponse.data && serverResponse.data.success) {
+      localStorage.setItem("userToken", serverResponse.data.token);
+      localStorage.setItem("userID", serverResponse.data.user.id);
+      window.location.href = "/";
+    } else {
+      const errorMessage =
+        serverResponse.data.message || "Đăng nhập không thành công.";
+      console.error(errorMessage);
+      generalError.value = errorMessage;
+    }
+  } catch (error) {
+    console.error("Lỗi khi đăng nhập bằng Google:", error);
+    generalError.value =
+      "Đăng nhập bằng Google không thành công. Vui lòng thử lại.";
+  }
+};
+
+onMounted(checkLoginStatus);
 </script>
 
 <style src="../styles/components/form-login-signup.css" scoped></style>

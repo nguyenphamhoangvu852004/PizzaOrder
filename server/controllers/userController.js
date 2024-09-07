@@ -2,9 +2,13 @@ import mySqlPool from "../config/db.js"
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import dotenv from "dotenv"
+import { OAuth2Client } from 'google-auth-library';
 dotenv.config()
 const db = mySqlPool
 const salt = 10;
+
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 const createAccount = async (req, res) => {
     try {
