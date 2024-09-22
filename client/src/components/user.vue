@@ -7,15 +7,15 @@
       <button @click="goToSection('orders')" class="nav-button">
         <i class="fa-solid fa-cart-shopping" style="color: #ffffff"></i> Orders
       </button>
-      <button @click="goToSection('messages')" class="nav-button">
+      <!-- <button @click="goToSection('messages')" class="nav-button">
         <i class="fa-solid fa-message" style="color: #ffffff"></i> Messages
-      </button>
+      </button> -->
       <button @click="goToSection('history')" class="nav-button">
         <i class="fa-solid fa-bag-shopping" style="color: #ffffff"></i> History
       </button>
-      <button @click="goToSection('address')" class="nav-button">
+      <!-- <button @click="goToSection('address')" class="nav-button">
         <i class="fa-solid fa-location-dot" style="color: #ffffff"></i> Address
-      </button>
+      </button> -->
       <button @click="goToSection('payment')" class="nav-button">
         <i class="fa-solid fa-money-bill" style="color: #ffffff"></i> Payment
       </button>
