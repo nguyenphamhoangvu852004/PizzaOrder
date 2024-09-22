@@ -1,6 +1,6 @@
 import { OAuth2Client } from 'google-auth-library';
 import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import mySqlPool from '../config/db.js';
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID); // Thay thế CLIENT_ID bằng giá trị của bạn
